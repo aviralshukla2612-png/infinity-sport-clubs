@@ -67,8 +67,8 @@ const Home = () => {
             {/* Card 1: Cricket */}
             <div className="centered-card cricket-card">
               <div className="card-image-wrapper cricket-bg">
-                <div className="card-icon-3d">
-                  <img src="/src/assets/images/cricket_3d.png" alt="Cricket" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
+                  <img src="/src/assets/images/cricket_3d.png" alt="Cricket" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 </div>
               </div>
               <h2 className="card-heading">CRICKET</h2>
@@ -85,8 +85,8 @@ const Home = () => {
             {/* Card 2: Volleyball */}
             <div className="centered-card volleyball-card">
               <div className="card-image-wrapper volleyball-bg">
-                <div className="card-icon-3d">
-                  <img src="/src/assets/images/volleyball_3d.png" alt="Volleyball" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
+                  <img src="/src/assets/images/volleyball_3d.png" alt="Volleyball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 </div>
               </div>
               <h2 className="card-heading">VOLLEYBALL</h2>
@@ -103,8 +103,8 @@ const Home = () => {
             {/* Card 3: Pickleball */}
             <div className="centered-card pickleball-card">
               <div className="card-image-wrapper pickleball-bg">
-                <div className="card-icon-3d">
-                  <img src="/src/assets/images/pickleball_3d.png" alt="Pickleball" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
+                  <img src="/src/assets/images/pickleball_3d.png" alt="Pickleball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 </div>
               </div>
               <h2 className="card-heading">PICKLEBALL</h2>
