@@ -2,14 +2,14 @@
 
 .home-page {
   background-color: #090909;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Premium Hero Layout - 100vh Fixed */
+/* Premium Hero Layout - Minimum 100vh Fixed */
 .premium-hero {
   position: relative;
-  height: 100vh; /* Strictly 100vh */
+  min-height: 100vh;
   width: 100vw;
   background-size: cover;
   background-position: center;
@@ -26,16 +26,19 @@
 .premium-hero-container {
   position: relative;
   width: 100%;
-  max-width: 1280px; /* A slight increase from 1100px to push it a little to the left, aligning with the pole */
+  max-width: 1280px; 
   margin: 0 auto;
-  height: 100%;
+  min-height: 100vh;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 12vh;
+  padding-bottom: 4vh;
 }
 
 .hero-left-content {
-  position: absolute;
-  top: 12vh;
-  left: 0;
+  position: relative;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -149,9 +152,7 @@
 
 /* Cards Area */
 .floating-cards-centered {
-  position: absolute;
-  bottom: 2vh;
-  left: 0;
+  position: relative;
   width: 100%;
   z-index: 20;
   display: flex;
@@ -245,32 +246,7 @@
   letter-spacing: 1.5px;
   text-transform: uppercase;
   margin-bottom: 16px;
-}
-
 .orange-text { color: #FF7A00; }
-
-/* Desktop short screen fixes (Laptops) */
-@media (max-height: 900px) and (min-width: 1201px) {
-  .hero-title-main { font-size: 52px; margin-bottom: 10px; }
-  .hero-description { font-size: 14px; margin-bottom: 16px; }
-  .hero-left-content { top: 8vh; }
-  .centered-card { width: 300px; height: 400px; padding-bottom: 24px; }
-  .card-image-wrapper { width: 110px; height: 110px; margin: 30px auto 16px; }
-  .card-heading { font-size: 22px; }
-}
-
-@media (max-height: 768px) and (min-width: 1201px) {
-  .hero-title-main { font-size: 42px; margin-bottom: 8px; }
-  .hero-description { font-size: 13px; margin-bottom: 12px; }
-  .hero-left-content { top: 6vh; }
-  .centered-card { width: 260px; height: 350px; padding-bottom: 20px; }
-  .card-image-wrapper { width: 90px; height: 90px; margin: 20px auto 12px; }
-  .card-icon-3d svg { width: 32px; height: 32px; }
-  .card-heading { font-size: 18px; margin-bottom: 2px; }
-  .card-subheading { margin-bottom: 10px; }
-  .card-body { font-size: 12px; line-height: 1.4; margin-bottom: 16px; }
-  .card-action-btn { padding: 10px 20px; font-size: 13px; }
-}
 .blue-text { color: #2F80ED; }
 .green-text { color: #84CC16; }
 
@@ -324,7 +300,6 @@
   .hero-left-content {
     position: relative;
     top: 0;
-    margin-top: 12vh;
     padding: 0 20px;
     align-items: center;
     text-align: center;
@@ -345,8 +320,8 @@
     bottom: auto;
     flex-direction: column;
     align-items: center;
-    margin-top: 60px;
-    padding-bottom: 80px;
+    margin-top: 40px;
+    padding-bottom: 60px;
   }
   
   .hero-wave {
