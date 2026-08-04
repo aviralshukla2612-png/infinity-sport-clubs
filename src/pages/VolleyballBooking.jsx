@@ -861,6 +861,9 @@ const VolleyballBooking = () => {
             <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
               <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => {
+                const isConfirmed = window.confirm("Are you sure you want to proceed with the payment and confirm this booking?");
+                if (!isConfirmed) return;
+                
                 const newId = '#BK' + Math.floor(Math.random() * 90000 + 10000);
                 const bookingRecord = {
                   id: newId,
