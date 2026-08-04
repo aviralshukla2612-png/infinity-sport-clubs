@@ -42,6 +42,12 @@ const Navbar = () => {
           
           {/* Mobile only actions in menu */}
           <div className="mobile-only-actions">
+            <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+              <button className="book-now-btn" style={{width: '100%', marginTop: '1rem', backgroundColor: '#333'}}>Admin</button>
+            </Link>
+            <Link to="/subadmin" onClick={() => setIsMobileMenuOpen(false)}>
+              <button className="book-now-btn" style={{width: '100%', marginTop: '1rem', backgroundColor: '#333'}}>SubAdmin</button>
+            </Link>
             <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
               <button className="book-now-btn" style={{width: '100%', marginTop: '1rem'}}>Book Now</button>
             </Link>
@@ -55,6 +61,12 @@ const Navbar = () => {
               <span className="city">Rajkot, Gujarat</span>
             </div>
           </div>
+          <Link to="/admin">
+            <button className="book-now-btn" style={{backgroundColor: '#333', marginRight: '8px'}}>Admin</button>
+          </Link>
+          <Link to="/subadmin">
+            <button className="book-now-btn" style={{backgroundColor: '#333', marginRight: '8px'}}>SubAdmin</button>
+          </Link>
           <Link to="/dashboard">
             <button className="book-now-btn">Book Now</button>
           </Link>
