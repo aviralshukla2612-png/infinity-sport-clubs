@@ -120,6 +120,27 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Sections for Navigation */}
+      <section id="about" style={{ padding: '4rem 2rem', background: '#111', color: '#fff', textAlign: 'center' }}>
+        <h2>About Us</h2>
+        <p style={{ color: '#aaa', maxWidth: '600px', margin: '1rem auto' }}>Welcome to Infinity Sports Club. Experience world-class infrastructure tailored for tournaments and recreational sports.</p>
+      </section>
+
+      <section id="facilities" style={{ padding: '4rem 2rem', background: '#1a1a1a', color: '#fff', textAlign: 'center' }}>
+        <h2>Our Facilities</h2>
+        <p style={{ color: '#aaa', maxWidth: '600px', margin: '1rem auto' }}>We offer top-notch cricket grounds, volleyball courts, and pickleball arenas designed for professionals.</p>
+      </section>
+
+      <section id="gallery" style={{ padding: '4rem 2rem', background: '#111', color: '#fff', textAlign: 'center' }}>
+        <h2>Gallery</h2>
+        <p style={{ color: '#aaa', maxWidth: '600px', margin: '1rem auto' }}>A sneak peek into our tournaments, events, and campus.</p>
+      </section>
+
+      <section id="contact" style={{ padding: '4rem 2rem', background: '#1a1a1a', color: '#fff', textAlign: 'center' }}>
+        <h2>Contact Us</h2>
+        <p style={{ color: '#aaa', maxWidth: '600px', margin: '1rem auto' }}>Reach out for bulk bookings, corporate events, or tournament scheduling.</p>
+      </section>
     </div>
   );
 };

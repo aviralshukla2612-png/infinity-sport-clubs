@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { MapPin, ChevronDown, Shield, Users, Menu, X } from 'lucide-react';
 import logo from '../../assets/images/logo.jpg';
 import './Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleNavClick = (e, hash) => {
+    setIsMobileMenuOpen(false);
+    if (location.pathname === '/') {
+      e.preventDefault();
+      if (!hash) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <nav className="premium-navbar">
       <div className="container navbar-container">
@@ -28,11 +45,11 @@ const Navbar = () => {
               <X size={24} />
             </button>
           </div>
-          <Link to="/" className="nav-link active" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-          <Link to="/about" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
-          <Link to="/facilities" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Facilities</Link>
-          <Link to="/gallery" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
-          <Link to="/contact" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <Link to="/" className="nav-link active" onClick={(e) => handleNavClick(e, '')}>Home</Link>
+          <Link to="/#about" className="nav-link" onClick={(e) => handleNavClick(e, '#about')}>About Us</Link>
+          <Link to="/#facilities" className="nav-link" onClick={(e) => handleNavClick(e, '#facilities')}>Facilities</Link>
+          <Link to="/#gallery" className="nav-link" onClick={(e) => handleNavClick(e, '#gallery')}>Gallery</Link>
+          <Link to="/#contact" className="nav-link" onClick={(e) => handleNavClick(e, '#contact')}>Contact</Link>
           
           {/* Mobile only actions in menu */}
           <div className="mobile-only-actions">
