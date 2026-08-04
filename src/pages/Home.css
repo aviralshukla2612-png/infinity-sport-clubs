@@ -191,7 +191,9 @@
 .centered-card {
   width: 340px;
   height: 460px;
-  background: #0E0E0E;
+  background: rgba(20, 20, 20, 0.35); /* Glass effect background */
+  backdrop-filter: blur(16px); /* Glass blur */
+  -webkit-backdrop-filter: blur(16px); /* Safari support */
   border-radius: 28px;
   padding: 0 0 32px 0;
   display: flex;
@@ -201,7 +203,6 @@
   transition: all 0.4s ease;
   position: relative;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  border: 1px solid transparent; /* Prepare for hover border */
 }
 
 .centered-card:hover {
