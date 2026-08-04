@@ -51,6 +51,7 @@ const CricketBooking = () => {
 
   // Payment Modal States
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showConfirmBookingModal, setShowConfirmBookingModal] = useState(false);
   const [showChangePaymentModal, setShowChangePaymentModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('gpay');
   const [cardType, setCardType] = useState('credit');
@@ -862,10 +863,22 @@ const CricketBooking = () => {
 
              <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
-              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => {
-                const isConfirmed = window.confirm("Are you sure you want to proceed with the payment and confirm this booking?");
-                if (!isConfirmed) return;
-                
+              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => setShowConfirmBookingModal(true)}>Pay ₹{selectedGround.price + 200}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Confirmation Modal */}
+      {showConfirmBookingModal && (
+        <div className="modal-overlay animate-fade-in" style={{zIndex: 2000}}>
+          <div className="modal-content" style={{maxWidth: '400px', textAlign: 'center'}}>
+            <h3 style={{color: '#fff', marginBottom: '1rem'}}>Confirm Booking</h3>
+            <p style={{color: '#aaa', marginBottom: '2rem'}}>Are you sure you want to proceed with the payment and confirm this booking?</p>
+            <div style={{display: 'flex', gap: '1rem'}}>
+              <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowConfirmBookingModal(false)}>Cancel</button>
+              <button className="modal-btn-confirm" style={{flex: 1}} onClick={() => {
+                setShowConfirmBookingModal(false);
                 const newId = '#BK' + Math.floor(Math.random() * 90000 + 10000);
                 const bookingRecord = {
                   id: 'B' + Math.floor(Math.random() * 10000),
@@ -895,13 +908,13 @@ const CricketBooking = () => {
                 addBooking(bookingRecord);
                 setShowPaymentModal(false);
                 setStep(6);
-              }}>Pay ₹{selectedGround.price + 200}</button>
+              }}>Confirm</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Players Modal */}
+      {/* Change Payment Modal */}
       {showPlayersModal && (
         <div className="payment-modal-overlay" onClick={(e) => { if(e.target === e.currentTarget) setShowPlayersModal(false) }}>
           <div className="payment-modal animate-fade-in" style={{ maxWidth: '500px', width: '90%', maxHeight: '80vh', overflowY: 'auto' }}>
