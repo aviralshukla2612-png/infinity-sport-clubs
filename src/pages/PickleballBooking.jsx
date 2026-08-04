@@ -49,6 +49,7 @@ const PickleballBooking = () => {
 
   // Payment Modal States
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showChangePaymentModal, setShowChangePaymentModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('gpay');
   const [cardType, setCardType] = useState('credit');
   
@@ -85,7 +86,8 @@ const PickleballBooking = () => {
     if (step === 2 && !selectedDate) return true;
     if (step === 3 && !selectedTimeSlot) return true;
     if (step === 4) {
-      if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !playerDetails.aadhar.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !emailRegex.test(playerDetails.email) || !playerDetails.aadhar.trim()) {
         return true;
       }
       const numOtherPlayers = playerCount === '10+' ? 9 : playerCount - 1;
@@ -354,6 +356,9 @@ const PickleballBooking = () => {
                     <div className="form-group">
                       <label>Email Address</label>
                       <input type="email" className="dark-input" placeholder="Your Email" value={playerDetails.email} onChange={(e) => setPlayerDetails({...playerDetails, email: e.target.value})} />
+                      {playerDetails.email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(playerDetails.email) && (
+                        <span style={{color: '#ef4444', fontSize: '0.75rem', marginTop: '4px', display: 'block'}}>Please enter a valid email address.</span>
+                      )}
                     </div>
                     <div className="form-group">
                       <label>Aadhar Card Number</label>
@@ -439,7 +444,7 @@ const PickleballBooking = () => {
               
               <div className="summary-row">
                 <span className="label">Date</span>
-                <span className="value">{selectedDate ? `May ${selectedDate}, 2025` : '-'}</span>
+                <span className="value">{selectedDate ? `${selectedDate} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][calMonth]} ${calYear}` : '-'}</span>
               </div>
               
               <div className="summary-row">
@@ -501,7 +506,7 @@ const PickleballBooking = () => {
                      <Calendar size={18} className="preview-icon"/>
                      <div>
                        <div className="label">Date</div>
-                       <div className="val">{selectedDate} May 2025</div>
+                       <div className="val">{selectedDate ? `${selectedDate} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][calMonth]} ${calYear}` : '-'}</div>
                        <div className="sub">Friday</div>
                      </div>
                    </div>
@@ -617,7 +622,7 @@ const PickleballBooking = () => {
                           </>
                        )}
                     </div>
-                    <span style={{fontSize: '0.75rem', color: 'var(--primary-color)', cursor: 'pointer'}} onClick={() => setShowPaymentModal(true)}>Change</span>
+                    <span style={{fontSize: '0.75rem', color: 'var(--primary-color)', cursor: 'pointer'}} onClick={() => setShowChangePaymentModal(true)}>Change</span>
                  </div>
               </div>
 
@@ -626,7 +631,7 @@ const PickleballBooking = () => {
                  <span>100% Secure Booking. Your payment and personal details are always safe with us.</span>
               </div>
 
-              <button className="preview-btn-confirm" onClick={handleNext}>
+              <button className="preview-btn-confirm" onClick={() => setShowPaymentModal(true)}>
                  Confirm Booking <ArrowRight size={18}/>
               </button>
               <button className="preview-btn-edit" onClick={() => setStep(4)}>
@@ -696,12 +701,12 @@ const PickleballBooking = () => {
       </div>
 
       {/* Payment Selection Modal */}
-      {showPaymentModal && (
+      {showChangePaymentModal && (
         <div className="animate-fade-in" style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <div style={{background: '#141414', border: '1px solid #333', borderRadius: '12px', padding: '2rem', width: '90%', maxWidth: '450px'}}>
              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem'}}>
                <h3 style={{margin: 0, fontSize: '1.2rem', fontWeight: 600}}>Select Payment Method</h3>
-               <span style={{cursor: 'pointer', fontSize: '1.5rem', lineHeight: 1, color: '#888'}} onClick={() => setShowPaymentModal(false)}>&times;</span>
+               <span style={{cursor: 'pointer', fontSize: '1.5rem', lineHeight: 1, color: '#888'}} onClick={() => setShowChangePaymentModal(false)}>&times;</span>
              </div>
              
              <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem'}}>
@@ -753,7 +758,7 @@ const PickleballBooking = () => {
                  </div>
                </div>
              )}
-             <button className="preview-btn-confirm" onClick={() => setShowPaymentModal(false)}>
+             <button className="preview-btn-confirm" onClick={() => setShowChangePaymentModal(false)}>
                Save & Continue
              </button>
           </div>
@@ -775,6 +780,16 @@ const PickleballBooking = () => {
                   <div className="radio-inner"></div>
                 </div>
                 <div style={{fontWeight: 600}}>Google Pay</div>
+              </div>
+
+              <div 
+                className={`payment-option ${selectedPaymentMethod === 'upi' ? 'selected' : ''}`}
+                onClick={() => setSelectedPaymentMethod('upi')}
+              >
+                <div className="radio-btn">
+                  <div className="radio-inner"></div>
+                </div>
+                <div style={{fontWeight: 600}}>UPI / Pay at Venue</div>
               </div>
 
               <div 
@@ -812,8 +827,8 @@ const PickleballBooking = () => {
             )}
 
              <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
-              <button className="back-btn" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
-              <button className="next-btn" style={{flex: 2}} onClick={() => {
+              <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
+              <button className="modal-btn-confirm" style={{flex: 2}} onClick={() => {
                 const newId = '#BK' + Math.floor(Math.random() * 90000 + 10000);
                 const bookingRecord = {
                   id: newId,

@@ -16,7 +16,7 @@ import './AdminDashboard.css';
 // ─── Data ────────────────────────────────────────────────
 // ─── Mock data removed, using GlobalBookingContext ───
 
-const CUSTOMERS = [
+const INITIAL_CUSTOMERS = [
   { id:'C001', name:'Rahul Sharma',  email:'rahul@email.com',  phone:'9876543210', bookings:8,  spent:12500, status:'active',   joined:'Jan 2026' },
   { id:'C002', name:'Amit Verma',   email:'amit@email.com',   phone:'9123456780', bookings:5,  spent:8200,  status:'active',   joined:'Feb 2026' },
   { id:'C003', name:'Sneha Patil',  email:'sneha@email.com',  phone:'9000700010', bookings:3,  spent:4100,  status:'active',   joined:'Mar 2026' },
@@ -25,7 +25,7 @@ const CUSTOMERS = [
   { id:'C006', name:'Pooja Mehta',  email:'pooja@email.com',  phone:'9890000089', bookings:6,  spent:9800,  status:'active',   joined:'Feb 2026' },
 ];
 
-const ADMINS = [
+const INITIAL_ADMINS = [
   { id:'A001', name:'Admin Super',  email:'admin@infinity.com',    role:'Super Admin', status:'active',  lastLogin:'03 Aug 2026, 9:05 AM' },
   { id:'A002', name:'Rahul Patel',  email:'rahul.p@infinity.com',  role:'Sub Admin',   status:'active',  lastLogin:'03 Aug 2026, 8:45 AM' },
   { id:'A003', name:'Priya Mehta',  email:'priya@infinity.com',    role:'Sub Admin',   status:'active',  lastLogin:'02 Aug 2026, 5:30 PM' },
@@ -128,7 +128,9 @@ const MiniBarChart = ({ data, color }) => {
 // ═══════════════════════════════════════════════════════════
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const { bookings: BOOKINGS, cancelBooking, processRefund, updateBookingStatus } = useGlobalBooking();
+  const { bookings: BOOKINGS, deleteBooking, processRefund, updateBookingStatus } = useGlobalBooking();
+  const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
+  const [admins, setAdmins] = useState(INITIAL_ADMINS);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [slotSport, setSlotSport] = useState('cricket');
@@ -182,7 +184,7 @@ export default function AdminDashboard() {
   const totalRevToday = BOOKINGS.filter(b=>b.date.startsWith('03 Aug 2026') && b.status!=='cancelled').reduce((s,b)=>s+b.amount,0);
   const totalConfirmed = BOOKINGS.filter(b=>b.status==='confirmed').length;
   const totalPending   = BOOKINGS.filter(b=>b.status==='pending').length;
-  const totalCustomers = CUSTOMERS.length;
+  const totalCustomers = customers.length;
 
   const nav = [
     { id:'dashboard',  label:'Dashboard',  icon:<LayoutDashboard size={15}/>, section:'main' },
@@ -576,7 +578,7 @@ export default function AdminDashboard() {
                         <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/> View</button>
                         <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/> Edit</button>
                         <button className="admin-icon-btn danger" title="Delete" onClick={() => {
-                          showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => cancelBooking(b.id));
+                          showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => deleteBooking(b.id));
                         }}><Trash2 size={12}/> Delete</button>
                       </div>
                     </td>
@@ -627,7 +629,7 @@ export default function AdminDashboard() {
                 <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Bookings</th><th>Total Spent</th><th>Joined</th><th>Status</th><th>Action</th></tr>
               </thead>
               <tbody>
-                {CUSTOMERS.filter(c=>{
+                {customers.filter(c=>{
                   const q=custSearch.toLowerCase();
                   return !q||c.name.toLowerCase().includes(q)||c.email.toLowerCase().includes(q)||c.phone.includes(q);
                 }).map(c => (
@@ -651,8 +653,11 @@ export default function AdminDashboard() {
                       <div style={{display:'flex',gap:'0.3rem'}}>
                         <button className="admin-icon-btn view" onClick={()=>setModal({type:'customer',data:c})}><Eye size={12}/> View</button>
                         <button className="admin-icon-btn edit" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={12}/> Edit</button>
-                        <button className="admin-icon-btn danger" onClick={() => {
-                          showConfirm('Delete Customer', 'Are you sure you want to delete this customer?', 'danger', () => showAlert('Deleted', 'Customer has been deleted.', 'success'));
+                        <button className="admin-icon-btn danger" title="Delete" onClick={() => {
+                          showConfirm('Delete Customer', 'Are you sure you want to delete this customer?', 'danger', () => {
+                            setCustomers(prev => prev.filter(cust => cust.id !== c.id));
+                            showAlert('Deleted', 'Customer has been deleted.', 'success');
+                          });
                         }}><Trash2 size={12}/> Delete</button>
                       </div>
                     </td>
@@ -841,7 +846,7 @@ export default function AdminDashboard() {
                 <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th>Action</th></tr>
               </thead>
               <tbody>
-                {ADMINS.map(a => (
+                {admins.map(a => (
                   <tr key={a.id}>
                     <td data-label="ID" style={{fontFamily:'monospace',color:'#555',fontSize:'0.72rem'}}>{a.id}</td>
                     <td data-label="Name">
@@ -965,6 +970,35 @@ export default function AdminDashboard() {
 
     const close = () => setModal(null);
 
+    const handleSave = () => {
+      if (modal.type === 'addCustomer') {
+        const name = document.getElementById('addCust_Full Name')?.value;
+        if (!name) return showAlert('Error', 'Name is required.', 'error');
+        const phone = document.getElementById('addCust_Phone')?.value || 'N/A';
+        const email = document.getElementById('addCust_Email')?.value || 'N/A';
+        const newCust = {
+          id: 'C00' + (customers.length + 1),
+          name, email, phone, bookings: 0, spent: 0, status: 'active', joined: new Date().toLocaleDateString('en-IN', {month:'short', year:'numeric'})
+        };
+        setCustomers(prev => [newCust, ...prev]);
+        showAlert('Success', 'Customer added successfully.', 'success');
+      } else if (modal.type === 'addAdmin') {
+        const name = document.getElementById('addAdmin_Full Name')?.value;
+        if (!name) return showAlert('Error', 'Name is required.', 'error');
+        const email = document.getElementById('addAdmin_Email')?.value || 'N/A';
+        const role = document.getElementById('addAdmin_Role')?.value || 'Sub Admin';
+        const newAdmin = {
+          id: 'A00' + (admins.length + 1),
+          name, email, role, status: 'active', lastLogin: 'Never'
+        };
+        setAdmins(prev => [newAdmin, ...prev]);
+        showAlert('Success', 'Admin added successfully.', 'success');
+      } else {
+        showAlert('Success', 'Settings saved successfully.', 'success');
+      }
+      close();
+    };
+
     if (modal.type === 'booking') {
       const b = modal.data;
       return (
@@ -990,7 +1024,7 @@ export default function AdminDashboard() {
               {b.status === 'confirmed' || b.status === 'upcoming' ? (
                 <>
                   <button className="admin-action-btn primary" style={{background: '#ef4444'}} onClick={() => {
-                    showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => { cancelBooking(b.id); close(); });
+                    showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => { deleteBooking(b.id); close(); });
                   }}>Delete Booking</button>
                   <button className="admin-action-btn primary" style={{background: '#eab308'}} onClick={() => {
                     showConfirm('Process Refund', 'Process refund for this booking?', 'warning', () => { processRefund(b.id); close(); });
@@ -1114,13 +1148,14 @@ export default function AdminDashboard() {
                   {[['Full Name','text'],['Email','email'],['Password','password']].map(([l,t])=>(
                     <div key={l} className="admin-form-group">
                       <label className="admin-form-label">{l}</label>
-                      <input className="admin-form-input" type={t} placeholder={l}/>
+                      <input id={`addAdmin_${l}`} className="admin-form-input" type={t} placeholder={l}/>
                     </div>
                   ))}
                   <div className="admin-form-group">
                     <label className="admin-form-label">Role</label>
-                    <select className="admin-form-input" style={{cursor:'pointer'}}>
+                    <select id="addAdmin_Role" className="admin-form-input" style={{cursor:'pointer'}}>
                       <option>Sub Admin</option>
+                      <option>Super Admin</option>
                     </select>
                   </div>
                 </div>
@@ -1130,7 +1165,7 @@ export default function AdminDashboard() {
                   {['Full Name','Phone','Email'].map(l=>(
                     <div key={l} className="admin-form-group">
                       <label className="admin-form-label">{l}</label>
-                      <input className="admin-form-input" type="text" placeholder={l}/>
+                      <input id={`addCust_${l}`} className="admin-form-input" type="text" placeholder={l}/>
                     </div>
                   ))}
                 </div>
@@ -1217,7 +1252,7 @@ export default function AdminDashboard() {
             </div>
             <div className="admin-modal-footer">
               <button className="admin-action-btn secondary" onClick={close}>Cancel</button>
-              <button className="admin-action-btn primary" onClick={() => { close(); showAlert('Success', 'Admin settings saved successfully.', 'success'); }}>Save</button>
+              <button className="admin-action-btn primary" onClick={handleSave}>Save</button>
             </div>
           </div>
         </div>

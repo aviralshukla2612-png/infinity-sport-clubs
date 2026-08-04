@@ -62,7 +62,7 @@ export default function MyBookings() {
     });
   };
   
-  const { bookings, cancelBooking } = useGlobalBooking();
+  const { bookings, deleteBooking } = useGlobalBooking();
   const BOOKINGS = bookings.filter(b => b.userId === 'user_1');
 
   const filtered = BOOKINGS.filter(b => {
@@ -723,11 +723,11 @@ export default function MyBookings() {
                 <button className="admin-action-btn secondary" style={{flex: 1}} onClick={() => showAlert('Coming Soon', 'Download receipt feature coming soon!', 'info')}>Download Receipt</button>
                 {viewBooking.status === 'confirmed' || viewBooking.status === 'upcoming' ? (
                   <button className="admin-action-btn primary" style={{background: '#ef4444', flex: 1}} onClick={() => {
-                    showConfirm('Cancel Booking', 'Are you sure you want to cancel this booking?', 'danger', () => {
-                      cancelBooking(viewBooking.id);
+                    showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => {
+                      deleteBooking(viewBooking.id);
                       setViewBooking(null);
                     });
-                  }}>Cancel Booking</button>
+                  }}>Delete Booking</button>
                 ) : null}
               </div>
             </div>

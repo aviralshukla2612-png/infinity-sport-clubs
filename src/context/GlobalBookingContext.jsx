@@ -91,6 +91,10 @@ export const GlobalBookingProvider = ({ children }) => {
     setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'cancelled' } : b));
   };
 
+  const deleteBooking = (id) => {
+    setBookings(prev => prev.filter(b => b.id !== id));
+  };
+
   const processRefund = (id) => {
     setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'cancelled', paymentStatus: 'refunded' } : b));
   };
@@ -101,6 +105,7 @@ export const GlobalBookingProvider = ({ children }) => {
       addBooking,
       updateBookingStatus,
       cancelBooking,
+      deleteBooking,
       processRefund
     }}>
       {children}

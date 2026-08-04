@@ -306,7 +306,7 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
 // ─── Main SubAdmin Dashboard ───────────────────────────────
 export default function SubAdminDashboard() {
   const navigate = useNavigate();
-  const { bookings: BOOKINGS_DATA, cancelBooking, updateBookingStatus, processRefund } = useGlobalBooking();
+  const { bookings: BOOKINGS_DATA, cancelBooking, deleteBooking, updateBookingStatus, processRefund } = useGlobalBooking();
   const [activeNav, setActiveNav]     = useState('bookings');
   const [search, setSearch]           = useState('');
   const [filterSport, setFilterSport] = useState('');
@@ -528,7 +528,10 @@ export default function SubAdminDashboard() {
                         <Pencil size={12}/> Edit
                       </button>
                       <button className="sa-action-btn danger" onClick={() => {
-                        showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => showAlert('Deleted', 'Booking deleted', 'success'));
+                        showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => {
+                          deleteBooking(booking.id);
+                          showAlert('Deleted', 'Booking deleted', 'success');
+                        });
                       }}>
                         <Trash2 size={12}/> Delete
                       </button>
