@@ -251,6 +251,23 @@
 .blue-text { color: #2F80ED; }
 .green-text { color: #84CC16; }
 
+/* Perfect Proportional Scaling for Small Laptops */
+@media (max-height: 880px) and (min-width: 1024px) {
+  .premium-hero-container {
+    transform: scale(0.9);
+  }
+}
+@media (max-height: 780px) and (min-width: 1024px) {
+  .premium-hero-container {
+    transform: scale(0.82);
+  }
+}
+@media (max-height: 700px) and (min-width: 1024px) {
+  .premium-hero-container {
+    transform: scale(0.72);
+  }
+}
+
 .card-body {
   color: rgba(255,255,255,0.7);
   font-size: 13px;
