@@ -467,6 +467,13 @@
 
 .mb-view-btn:hover { gap: 0.5rem; }
 
+.mb-booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
 /* ─── PAGINATION ─── */
 .mb-pagination {
   display: flex;
@@ -548,6 +555,7 @@
 }
 
 @media (max-width: 600px) {
+  .mb-booking-grid { grid-template-columns: 1fr; }
   .mb-booking-thumb { width: 70px; height: 55px; }
   .mb-booking-meta { gap: 0.7rem; flex-direction: column; align-items: flex-start; }
   .mb-filter-bar { flex-direction: column; align-items: stretch; }

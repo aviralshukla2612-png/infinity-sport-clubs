@@ -668,7 +668,7 @@ export default function MyBookings() {
                 </div>
               </div>
               
-              <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '25px'}}>
+              <div className="mb-booking-grid">
                 <div style={{display: 'flex', alignItems: 'center', gap: '12px', background: '#1a1a1a', padding: '12px', borderRadius: '10px'}}>
                   <Calendar size={18} color="var(--primary-color)"/>
                   <div>
