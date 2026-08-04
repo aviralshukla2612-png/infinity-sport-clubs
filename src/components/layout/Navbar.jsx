@@ -13,10 +13,7 @@ const Navbar = () => {
         
         {/* Left: Logo */}
         <Link to="/" className="navbar-logo-text" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ color: '#fff', fontSize: '24px', fontWeight: '800', lineHeight: 1 }}>i</span>
-            <span style={{ color: '#FF7A00', fontSize: '24px', fontWeight: '800', lineHeight: 1 }}>C</span>
-          </div>
+          <img src={logo} alt="Infinity Sports Club" className="logo-image" />
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <span style={{ color: '#fff', fontSize: '14px', fontWeight: '700', letterSpacing: '1px', lineHeight: 1.1 }}>INFINITY</span>
             <span style={{ color: '#FF7A00', fontSize: '10px', fontWeight: '700', letterSpacing: '0.5px', lineHeight: 1.1 }}>SPORTS CLUB</span>
@@ -26,10 +23,7 @@ const Navbar = () => {
         {/* Center: Links */}
         <div className={`navbar-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
           <div className="mobile-menu-header">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span style={{ color: '#fff', fontSize: '20px', fontWeight: '800' }}>i</span>
-              <span style={{ color: '#FF7A00', fontSize: '20px', fontWeight: '800' }}>C</span>
-            </div>
+            <img src={logo} alt="Infinity Sports Club" className="logo-image" style={{ height: '32px' }} />
             <button className="mobile-close-btn" onClick={() => setIsMobileMenuOpen(false)}>
               <X size={24} />
             </button>
