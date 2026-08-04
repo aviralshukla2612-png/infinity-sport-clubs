@@ -12,6 +12,7 @@ import ground1Img from '../assets/images/ground1.jpg';
 import ground2Img from '../assets/images/ground2.jpg';
 import ball1Img   from '../assets/images/ball1.jpg';
 import pickel1Img from '../assets/images/pickel1.jpg';
+import CustomDialog from '../components/ui/CustomDialog';
 import './SubAdminDashboard.css';
 
 const SPORT_IMAGES = { cricket: ground1Img, volleyball: ball1Img, pickleball: pickel1Img };
@@ -274,7 +275,7 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
               {icon:<Share2 size={13}/>,   label:'Share Booking',    hColor:'#007BFF'},
             ].map((btn,i) => (
               <button key={i}
-                onClick={() => alert(`${btn.label} action triggered.`)}
+                onClick={() => showAlert('Action', `${btn.label} action triggered.`, 'info')}
                 style={{display:'flex',alignItems:'center',gap:'0.4rem',padding:'0.45rem 0.85rem',borderRadius:'8px',background:'#111',border:'1px solid #222',color:'#888',fontSize:'0.77rem',fontWeight:500,cursor:'pointer',transition:'all 0.2s'}}
                 onMouseEnter={e=>{e.currentTarget.style.borderColor=btn.hColor;e.currentTarget.style.color=btn.hColor;}}
                 onMouseLeave={e=>{e.currentTarget.style.borderColor='#222';e.currentTarget.style.color='#888';}}>
@@ -284,10 +285,10 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
             {booking.status !== 'cancelled' && booking.status !== 'completed' && (
               <button
                 onClick={() => {
-                  if (window.confirm('Are you sure you want to cancel this booking?')) {
+                  showConfirm('Cancel Booking', 'Are you sure you want to cancel this booking?', 'danger', () => {
                     onCancel(booking.id);
                     onClose();
-                  }
+                  });
                 }}
                 style={{display:'flex',alignItems:'center',gap:'0.4rem',padding:'0.45rem 0.85rem',borderRadius:'8px',background:'rgba(239,68,68,0.07)',border:'1px solid rgba(239,68,68,0.2)',color:'#ef4444',fontSize:'0.77rem',fontWeight:500,cursor:'pointer',transition:'background 0.2s',marginLeft:'auto'}}
                 onMouseEnter={e=>e.currentTarget.style.background='rgba(239,68,68,0.15)'}
@@ -317,6 +318,25 @@ export default function SubAdminDashboard() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const rowsPerPage = 10;
+  
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
+  const [alertDialog, setAlertDialog] = useState({ isOpen: false });
+
+  // Custom alert helper
+  const showAlert = (title, message, variant = 'info') => {
+    setAlertDialog({ isOpen: true, title, message, variant });
+  };
+
+  // Custom confirm helper
+  const showConfirm = (title, message, variant = 'warning', onConfirm) => {
+    setConfirmDialog({
+      isOpen: true, title, message, variant,
+      onConfirm: () => {
+        setConfirmDialog({ isOpen: false });
+        if (onConfirm) onConfirm();
+      }
+    });
+  };
 
   const stats = useMemo(() => ({
     total:     BOOKINGS_DATA.length,
@@ -457,7 +477,7 @@ export default function SubAdminDashboard() {
               <option value="completed">Completed</option>
               <option value="cancelled">Cancelled</option>
             </select>
-            <div className="sa-date-filter" style={{cursor: 'pointer'}} onClick={() => alert('Date range picker coming soon')}><Calendar size={13}/> Select Date Range <ChevronDown size={12}/></div>
+            <div className="sa-date-filter" style={{cursor: 'pointer'}} onClick={() => showAlert('Coming Soon', 'Date range picker coming soon', 'info')}><Calendar size={13}/> Select Date Range <ChevronDown size={12}/></div>
             <button className="sa-reset-btn" onClick={resetFilters}><RefreshCw size={13}/> Reset</button>
           </div>
 
@@ -504,11 +524,11 @@ export default function SubAdminDashboard() {
                       <button className="sa-action-btn view" onClick={() => setViewBooking(b)}>
                         <Eye size={12}/> View
                       </button>
-                      <button className="sa-action-btn edit" onClick={() => alert('Edit triggered for ' + b.id)}>
+                      <button className="sa-action-btn edit" onClick={() => showAlert('Edit', 'Edit triggered for ' + b.id, 'info')}>
                         <Pencil size={12}/> Edit
                       </button>
                       <button className="sa-action-btn danger" onClick={() => {
-                        if(window.confirm('Delete this booking?')) alert('Booking deleted');
+                        showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => showAlert('Deleted', 'Booking deleted', 'success'));
                       }}>
                         <Trash2 size={12}/> Delete
                       </button>
@@ -639,7 +659,7 @@ export default function SubAdminDashboard() {
             <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button style={{flex: 1, padding: '0.8rem', background: 'transparent', border: '1px solid #333', borderRadius: '8px', color: '#ccc', cursor: 'pointer'}} onClick={() => setShowPasswordModal(false)}>Cancel</button>
               <button style={{flex: 1, padding: '0.8rem', background: '#007BFF', border: 'none', borderRadius: '8px', color: '#fff', cursor: 'pointer', fontWeight: 600}} onClick={() => {
-                alert('Password updated successfully!');
+                showAlert('Success', 'Password updated successfully!', 'success');
                 setShowPasswordModal(false);
               }}>Update Password</button>
             </div>

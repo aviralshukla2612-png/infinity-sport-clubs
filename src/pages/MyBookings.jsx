@@ -16,6 +16,7 @@ import ball1Img   from '../assets/images/ball1.jpg';
 import ball2Img   from '../assets/images/ball2.jpg';
 import pickel1Img from '../assets/images/pickel1.jpg';
 import pickel2Img from '../assets/images/pickel2.jpg';
+import CustomDialog from '../components/ui/CustomDialog';
 import './MyBookings.css';
 
 // ─── Mock data removed, now using GlobalBookingContext ───
@@ -41,6 +42,25 @@ export default function MyBookings() {
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [viewBooking, setViewBooking] = useState(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
+  const [alertDialog, setAlertDialog] = useState({ isOpen: false });
+
+  // Custom alert helper
+  const showAlert = (title, message, variant = 'info') => {
+    setAlertDialog({ isOpen: true, title, message, variant });
+  };
+
+  // Custom confirm helper
+  const showConfirm = (title, message, variant = 'warning', onConfirm) => {
+    setConfirmDialog({
+      isOpen: true, title, message, variant,
+      onConfirm: () => {
+        setConfirmDialog({ isOpen: false });
+        if (onConfirm) onConfirm();
+      }
+    });
+  };
   
   const { bookings, cancelBooking } = useGlobalBooking();
   const BOOKINGS = bookings.filter(b => b.userId === 'user_1');
@@ -219,9 +239,9 @@ export default function MyBookings() {
                   </button>
                 ))}
               </div>
-              <div className="mb-filter-right">
-                <button className="mb-filter-btn" onClick={() => alert('Filter by sport coming soon.')}>All Sports</button>
-                <button className="mb-filter-btn" onClick={() => alert('Date filter coming soon.')}><Filter size={14} /> Filter by Date</button>
+              <div className="mb-filters">
+                <button className="mb-filter-btn" onClick={() => showAlert('Coming Soon', 'Filter by sport coming soon.', 'info')}>All Sports</button>
+                <button className="mb-filter-btn" onClick={() => showAlert('Coming Soon', 'Date filter coming soon.', 'info')}><Filter size={14} /> Filter by Date</button>
               </div>
             </div>
 
@@ -284,11 +304,11 @@ export default function MyBookings() {
               <span className="mb-pagination-info">
                 Showing 1 to {filtered.length} of {filtered.length} bookings
               </span>
-              <div className="mb-pages">
+              <div className="mb-pagination">
                 <button className="mb-page-btn active">1</button>
-                <button className="mb-page-btn" onClick={() => alert('Page 2')}>2</button>
-                <button className="mb-page-btn" onClick={() => alert('Page 3')}>3</button>
-                <button className="mb-page-btn" onClick={() => alert('Next page')}>›</button>
+                <button className="mb-page-btn" onClick={() => showAlert('Info', 'Page 2', 'info')}>2</button>
+                <button className="mb-page-btn" onClick={() => showAlert('Info', 'Page 3', 'info')}>3</button>
+                <button className="mb-page-btn" onClick={() => showAlert('Info', 'Next page', 'info')}>›</button>
               </div>
             </div>
           </>
@@ -299,7 +319,7 @@ export default function MyBookings() {
             <div style={{display: 'flex', gap: '2rem'}}>
               {/* Profile Card */}
               <div style={{flex: 1, background: '#111', borderRadius: '16px', padding: '2rem', border: '1px solid #222', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative'}}>
-                <button className="admin-icon-btn" style={{position: 'absolute', top: '1rem', right: '1rem'}} onClick={() => alert('Edit Profile clicked')}><Edit3 size={18}/></button>
+                <button className="admin-icon-btn" style={{position: 'absolute', top: '1rem', right: '1rem'}} onClick={() => showAlert('Coming Soon', 'Edit Profile clicked', 'info')}><Edit3 size={18}/></button>
                 <div style={{width: '100px', height: '100px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary-color), #ff4d00)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '1rem'}}>
                   RS
                 </div>
@@ -572,8 +592,8 @@ export default function MyBookings() {
               </div>
             </div>
             
-            <div style={{textAlign: 'right'}}>
-              <button className="admin-action-btn primary" onClick={() => alert('Settings Saved!')}>Save Changes</button>
+            <div className="mb-card" style={{marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end'}}>
+              <button className="admin-action-btn primary" onClick={() => showAlert('Success', 'Settings Saved!', 'success')}>Save Changes</button>
             </div>
           </div>
         )}
@@ -602,7 +622,7 @@ export default function MyBookings() {
             <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button className="admin-action-btn secondary" style={{flex: 1}} onClick={() => setShowPasswordModal(false)}>Cancel</button>
               <button className="admin-action-btn primary" style={{flex: 1}} onClick={() => {
-                alert('Password updated successfully!');
+                showAlert('Success', 'Password updated successfully!', 'success');
                 setShowPasswordModal(false);
               }}>Update Password</button>
             </div>
@@ -633,7 +653,7 @@ export default function MyBookings() {
             <div style={{display: 'flex', gap: '1rem'}}>
               <button className="admin-action-btn secondary" style={{flex: 1}} onClick={() => setShow2FAModal(false)}>Cancel</button>
               <button className="admin-action-btn primary" style={{flex: 1}} onClick={() => {
-                alert('Two-Factor Authentication enabled successfully!');
+                showAlert('Success', 'Two-Factor Authentication enabled successfully!', 'success');
                 setShow2FAModal(false);
               }}>Verify & Enable</button>
             </div>
@@ -699,22 +719,33 @@ export default function MyBookings() {
                 </div>
               </div>
               
-              <div style={{display: 'flex', gap: '10px'}}>
-                <button className="admin-action-btn secondary" style={{flex: 1}} onClick={() => alert('Download receipt feature coming soon!')}>Download Receipt</button>
-                {(viewBooking.status === 'upcoming' || viewBooking.status === 'confirmed') && (
+              <div style={{display: 'flex', gap: '0.8rem', marginTop: '1.5rem'}}>
+                <button className="admin-action-btn secondary" style={{flex: 1}} onClick={() => showAlert('Coming Soon', 'Download receipt feature coming soon!', 'info')}>Download Receipt</button>
+                {viewBooking.status === 'confirmed' || viewBooking.status === 'upcoming' ? (
                   <button className="admin-action-btn primary" style={{background: '#ef4444', flex: 1}} onClick={() => {
-                    if(window.confirm('Are you sure you want to cancel this booking?')) {
+                    showConfirm('Cancel Booking', 'Are you sure you want to cancel this booking?', 'danger', () => {
                       cancelBooking(viewBooking.id);
                       setViewBooking(null);
-                    }
+                    });
                   }}>Cancel Booking</button>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
         </div>
       )}
 
+      {/* Custom Dialogs */}
+      <CustomDialog 
+        {...alertDialog} 
+        onConfirm={() => setAlertDialog({ isOpen: false })} 
+        onCancel={() => setAlertDialog({ isOpen: false })}
+      />
+      <CustomDialog 
+        {...confirmDialog} 
+        type="confirm" 
+        onCancel={() => setConfirmDialog({ isOpen: false })} 
+      />
     </div>
   );
 }

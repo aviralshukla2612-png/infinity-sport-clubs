@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import logo from '../assets/images/logo.jpg';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
+import CustomDialog from '../components/ui/CustomDialog';
 import './AdminDashboard.css';
 
 // ─── Data ────────────────────────────────────────────────
@@ -137,6 +138,25 @@ export default function AdminDashboard() {
   const [custSearch, setCustSearch] = useState('');
   const [modal, setModal] = useState(null); // { type, data }
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
+  const [alertDialog, setAlertDialog] = useState({ isOpen: false });
+
+  // Custom alert helper
+  const showAlert = (title, message, variant = 'info') => {
+    setAlertDialog({ isOpen: true, title, message, variant });
+  };
+
+  // Custom confirm helper
+  const showConfirm = (title, message, variant = 'warning', onConfirm) => {
+    setConfirmDialog({
+      isOpen: true, title, message, variant,
+      onConfirm: () => {
+        setConfirmDialog({ isOpen: false });
+        if (onConfirm) onConfirm();
+      }
+    });
+  };
+
   const [settings, setSettings] = useState({
     emailNotif: true, smsNotif: false, autoConfirm: true, maintenanceMode: false,
     cricketPrice: 1999, volleyballPrice: 2199, pickleballPrice: 500,
@@ -556,7 +576,7 @@ export default function AdminDashboard() {
                         <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/> View</button>
                         <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/> Edit</button>
                         <button className="admin-icon-btn danger" title="Delete" onClick={() => {
-                          if(window.confirm('Delete this booking?')) cancelBooking(b.id);
+                          showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => cancelBooking(b.id));
                         }}><Trash2 size={12}/> Delete</button>
                       </div>
                     </td>
@@ -632,7 +652,7 @@ export default function AdminDashboard() {
                         <button className="admin-icon-btn view" onClick={()=>setModal({type:'customer',data:c})}><Eye size={12}/> View</button>
                         <button className="admin-icon-btn edit" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={12}/> Edit</button>
                         <button className="admin-icon-btn danger" onClick={() => {
-                          if(window.confirm('Delete this customer?')) alert('Customer deleted.');
+                          showConfirm('Delete Customer', 'Are you sure you want to delete this customer?', 'danger', () => showAlert('Deleted', 'Customer has been deleted.', 'success'));
                         }}><Trash2 size={12}/> Delete</button>
                       </div>
                     </td>
@@ -847,7 +867,7 @@ export default function AdminDashboard() {
                         <button className="admin-icon-btn view" onClick={() => setModal({type:'admin', data:a})}><Eye size={12}/> View</button>
                         <button className="admin-icon-btn edit" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={12}/> Edit</button>
                         {a.role !== 'Super Admin' && <button className="admin-icon-btn danger" onClick={() => {
-                          if(window.confirm('Delete this admin?')) alert('Admin deleted.');
+                          showConfirm('Delete Admin', 'Are you sure you want to delete this admin?', 'danger', () => showAlert('Deleted', 'Admin has been deleted.', 'success'));
                         }}><Trash2 size={12}/> Delete</button>}
                       </div>
                     </td>
@@ -865,7 +885,7 @@ export default function AdminDashboard() {
       <div>
         <div className="admin-section-head">
           <div><h1>Settings</h1><p>Configure your platform</p></div>
-          <button className="admin-action-btn primary" onClick={() => alert('Settings saved!')}>
+          <button className="admin-action-btn primary" onClick={() => showAlert('Settings Saved', 'Platform settings have been saved successfully.', 'success')}>
             Save Changes
           </button>
         </div>
@@ -970,14 +990,14 @@ export default function AdminDashboard() {
               {b.status === 'confirmed' || b.status === 'upcoming' ? (
                 <>
                   <button className="admin-action-btn primary" style={{background: '#ef4444'}} onClick={() => {
-                    if(window.confirm('Delete this booking?')) { cancelBooking(b.id); close(); }
+                    showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => { cancelBooking(b.id); close(); });
                   }}>Delete Booking</button>
                   <button className="admin-action-btn primary" style={{background: '#eab308'}} onClick={() => {
-                     if(window.confirm('Process refund for this booking?')) { processRefund(b.id); close(); }
+                    showConfirm('Process Refund', 'Process refund for this booking?', 'warning', () => { processRefund(b.id); close(); });
                   }}>Refund</button>
                 </>
               ) : null}
-              <button className="admin-action-btn primary" onClick={() => { alert('Printing ticket...'); window.print(); }}>Print Ticket</button>
+              <button className="admin-action-btn primary" onClick={() => { showAlert('Print', 'Printing ticket...', 'info'); setTimeout(()=>window.print(), 500); }}>Print Ticket</button>
             </div>
           </div>
         </div>
@@ -1002,7 +1022,7 @@ export default function AdminDashboard() {
               </p>
               <div style={{display:'flex',gap:'0.6rem',flexWrap:'wrap'}}>
                 {['available','booked','blocked'].map(s=>(
-                  <button key={s} className="admin-action-btn secondary" style={{flex:1}} onClick={() => { close(); alert(`Slot marked as ${s}`); }}>
+                  <button key={s} className="admin-action-btn secondary" style={{flex:1}} onClick={() => { close(); showAlert('Slot Updated', `Slot successfully marked as ${s}`, 'success'); }}>
                     Mark {s}
                   </button>
                 ))}
@@ -1197,7 +1217,7 @@ export default function AdminDashboard() {
             </div>
             <div className="admin-modal-footer">
               <button className="admin-action-btn secondary" onClick={close}>Cancel</button>
-              <button className="admin-action-btn primary" onClick={() => { close(); alert('Saved successfully!'); }}>Save</button>
+              <button className="admin-action-btn primary" onClick={() => { close(); showAlert('Success', 'Admin settings saved successfully.', 'success'); }}>Save</button>
             </div>
           </div>
         </div>
@@ -1311,6 +1331,18 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {/* Custom Dialogs */}
+      <CustomDialog 
+        {...alertDialog} 
+        onConfirm={() => setAlertDialog({ isOpen: false })} 
+        onCancel={() => setAlertDialog({ isOpen: false })}
+      />
+      <CustomDialog 
+        {...confirmDialog} 
+        type="confirm" 
+        onCancel={() => setConfirmDialog({ isOpen: false })} 
+      />
     </div>
   );
 }
