@@ -554,8 +554,10 @@ export default function AdminDashboard() {
                     <td data-label="Action">
                       <div style={{display:'flex',gap:'0.3rem'}}>
                         <button className="admin-icon-btn" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/></button>
-                        <button className="admin-icon-btn" title="Edit" onClick={() => alert('Edit feature coming soon.')}><Pencil size={12}/></button>
-                        <button className="admin-icon-btn danger" title="Cancel" onClick={() => alert('Booking cancelled.')}><Trash2 size={12}/></button>
+                        <button className="admin-icon-btn" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/></button>
+                        <button className="admin-icon-btn danger" title="Cancel" onClick={() => {
+                          if(window.confirm('Cancel this booking?')) cancelBooking(b.id);
+                        }}><Trash2 size={12}/></button>
                       </div>
                     </td>
                   </tr>
@@ -628,8 +630,10 @@ export default function AdminDashboard() {
                     <td data-label="Action">
                       <div style={{display:'flex',gap:'0.3rem'}}>
                         <button className="admin-icon-btn" onClick={()=>setModal({type:'customer',data:c})}><Eye size={12}/></button>
-                        <button className="admin-icon-btn" onClick={() => alert('Edit customer coming soon.')}><Pencil size={12}/></button>
-                        <button className="admin-icon-btn danger" onClick={() => alert('Customer deleted.')}><Trash2 size={12}/></button>
+                        <button className="admin-icon-btn" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={12}/></button>
+                        <button className="admin-icon-btn danger" onClick={() => {
+                          if(window.confirm('Delete this customer?')) alert('Customer deleted.');
+                        }}><Trash2 size={12}/></button>
                       </div>
                     </td>
                   </tr>
@@ -840,8 +844,11 @@ export default function AdminDashboard() {
                     <td style={{color:'#666',fontSize:'0.75rem'}}>{a.lastLogin}</td>
                     <td>
                       <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn" onClick={() => alert('Edit admin role coming soon.')}><Pencil size={12}/></button>
-                        {a.role !== 'Super Admin' && <button className="admin-icon-btn danger" onClick={() => alert('Admin user removed.')}><Trash2 size={12}/></button>}
+                        <button className="admin-icon-btn" onClick={() => setModal({type:'admin', data:a})}><Eye size={12}/></button>
+                        <button className="admin-icon-btn" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={12}/></button>
+                        {a.role !== 'Super Admin' && <button className="admin-icon-btn danger" onClick={() => {
+                          if(window.confirm('Delete this admin?')) alert('Admin deleted.');
+                        }}><Trash2 size={12}/></button>}
                       </div>
                     </td>
                   </tr>
@@ -1038,8 +1045,42 @@ export default function AdminDashboard() {
       );
     }
 
-    if (modal.type === 'addAdmin' || modal.type === 'addCustomer' || modal.type === 'addSlot') {
-      const titles = { addAdmin:'Add New Admin', addCustomer:'Add New Customer', addSlot:'Add New Slot' };
+    if (modal.type === 'customer' || modal.type === 'admin') {
+      const d = modal.data;
+      const isCust = modal.type === 'customer';
+      const fields = isCust
+        ? [['Name',d.name],['Email',d.email],['Phone',d.phone],['Bookings',d.bookings],['Total Spent',`₹${d.spent?.toLocaleString()}`],['Joined',d.joined],['Status',d.status]]
+        : [['Name',d.name],['Email',d.email],['Role',d.role],['Status',d.status],['Last Login',d.lastLogin]];
+      
+      return (
+        <div className="admin-modal-overlay" onClick={e=>e.target===e.currentTarget&&close()}>
+          <div className="admin-modal">
+            <div className="admin-modal-header">
+              <h3>{isCust ? 'Customer Details' : 'Admin Details'}</h3>
+              <button className="admin-modal-close" onClick={close}><XCircle size={14}/></button>
+            </div>
+            <div className="admin-modal-body">
+              {fields.map(([k,v])=>(
+                <div key={k} style={{display:'flex',justifyContent:'space-between',padding:'0.55rem 0',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+                  <span style={{fontSize:'0.78rem',color:'#555'}}>{k}</span>
+                  <span style={{fontSize:'0.82rem',color:'#ddd',fontWeight:500}}>{v}</span>
+                </div>
+              ))}
+            </div>
+            <div className="admin-modal-footer">
+              <button className="admin-action-btn secondary" onClick={close}>Close</button>
+              <button className="admin-action-btn primary" onClick={() => setModal({type: isCust?'editCustomer':'editAdmin', data:d})}>Edit Details</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (modal.type === 'addAdmin' || modal.type === 'addCustomer' || modal.type === 'addSlot' || modal.type === 'editBooking' || modal.type === 'editCustomer' || modal.type === 'editAdmin') {
+      const titles = { 
+        addAdmin:'Add New Admin', addCustomer:'Add New Customer', addSlot:'Add New Slot',
+        editBooking: 'Edit Booking', editCustomer: 'Edit Customer', editAdmin: 'Edit Admin'
+      };
       return (
         <div className="admin-modal-overlay" onClick={e=>e.target===e.currentTarget&&close()}>
           <div className="admin-modal">
@@ -1097,6 +1138,59 @@ export default function AdminDashboard() {
                   <div className="admin-form-group">
                     <label className="admin-form-label">End Time</label>
                     <input className="admin-form-input" type="time"/>
+                  </div>
+                </div>
+              )}
+              {modal.type === 'editCustomer' && (
+                <div>
+                  {[['Full Name', modal.data.name],['Phone', modal.data.phone],['Email', modal.data.email]].map(([l, v])=>(
+                    <div key={l} className="admin-form-group">
+                      <label className="admin-form-label">{l}</label>
+                      <input className="admin-form-input" type="text" defaultValue={v}/>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {modal.type === 'editAdmin' && (
+                <div>
+                  {[['Full Name', modal.data.name],['Email', modal.data.email]].map(([l, v])=>(
+                    <div key={l} className="admin-form-group">
+                      <label className="admin-form-label">{l}</label>
+                      <input className="admin-form-input" type="text" defaultValue={v}/>
+                    </div>
+                  ))}
+                  <div className="admin-form-group">
+                    <label className="admin-form-label">Role</label>
+                    <select className="admin-form-input" defaultValue={modal.data.role}>
+                      <option>Sub Admin</option>
+                      <option>Super Admin</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+              {modal.type === 'editBooking' && (
+                <div>
+                  <div className="admin-form-group">
+                    <label className="admin-form-label">Sport</label>
+                    <select className="admin-form-input" defaultValue={modal.data.sportLabel}>
+                      <option>Box Cricket</option><option>Volleyball</option><option>Pickleball</option>
+                    </select>
+                  </div>
+                  <div className="admin-form-group">
+                    <label className="admin-form-label">Date</label>
+                    <input className="admin-form-input" type="text" defaultValue={modal.data.date}/>
+                  </div>
+                  <div className="admin-form-group">
+                    <label className="admin-form-label">Time Slot</label>
+                    <input className="admin-form-input" type="text" defaultValue={modal.data.timeSlot}/>
+                  </div>
+                  <div className="admin-form-group">
+                    <label className="admin-form-label">Status</label>
+                    <select className="admin-form-input" defaultValue={modal.data.status}>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="pending">Pending</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
                   </div>
                 </div>
               )}
