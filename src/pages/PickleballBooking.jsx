@@ -222,7 +222,10 @@ const PickleballBooking = () => {
                       <div 
                         key={ground.id}
                         className={`ground-card ${selectedGroundId === ground.id ? 'selected' : ''}`}
-                        onClick={() => setSelectedGroundId(ground.id)}
+                        onClick={() => {
+                          setSelectedGroundId(ground.id);
+                          setTimeout(() => setStep(2), 300);
+                        }}
                       >
                         {selectedGroundId === ground.id && (
                           <CheckCircle2 size={20} className="selected-badge" />
@@ -283,7 +286,12 @@ const PickleballBooking = () => {
                           <div
                             key={day}
                             className={`cal-date ${selectedDate === day ? 'selected' : ''} ${isPast ? 'past' : ''}`}
-                            onClick={() => !isPast && setSelectedDate(day)}
+                            onClick={() => {
+                              if (!isPast) {
+                                setSelectedDate(day);
+                                setTimeout(() => setStep(3), 300);
+                              }
+                            }}
                             style={isPast ? {opacity: 0.3, cursor: 'not-allowed', pointerEvents: 'none'} : {cursor:'pointer'}}
                           >
                             {day}
@@ -317,7 +325,10 @@ const PickleballBooking = () => {
                         key={idx} 
                         className={`time-slot ${slot.status === 'booked' ? 'booked' : (selectedTimeSlot === slot.time ? 'selected' : 'available')}`}
                         onClick={() => {
-                          if (slot.status !== 'booked') setSelectedTimeSlot(slot.time);
+                          if (slot.status !== 'booked') {
+                            setSelectedTimeSlot(slot.time);
+                            setTimeout(() => setStep(4), 300);
+                          }
                         }}
                       >
                         {slot.time}
