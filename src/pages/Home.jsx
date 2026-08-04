@@ -5,6 +5,11 @@ import heroback from '../assets/images/heroback.png';
 import cricket3d from '../assets/images/cricket_3d.png';
 import volleyball3d from '../assets/images/volleyball_3d.png';
 import pickleball3d from '../assets/images/pickleball_3d.png';
+import LottieReact from 'lottie-react';
+const Lottie = LottieReact.default || LottieReact;
+import rohitAnimation from '../assets/lottie/rohit-sharma.json';
+import volleyballAnimation from '../assets/lottie/Volley_Ball_Player_Character2.json';
+import pickleballAnimation from '../assets/lottie/pickleball.json';
 import './Home.css';
 
 const Home = () => {
@@ -24,10 +29,7 @@ const Home = () => {
 
         <div className="premium-hero-container">
           <div className="hero-left-content">
-            <div className="premium-badge">
-              <Trophy size={14} className="badge-icon" />
-              <span>ONE OF GUJARAT'S LARGEST SPORTS VENUES!</span>
-            </div>
+
 
             <h1 className="hero-title-main">
               TOURNAMENT & <br />
@@ -39,7 +41,7 @@ const Home = () => {
               corporate events, academy competitions, and recreational sports.
             </p>
 
-            <div className="hero-features-row" style={{ justifyContent: 'flex-start' }}>
+            <div className="hero-features-row" style={{ justifyContent: 'flex-start', marginBottom: '32px' }}>
               <div className="feature-item-inline">
                 <div className="feature-icon-circle-custom"><Map size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
@@ -69,10 +71,8 @@ const Home = () => {
             
             {/* Card 1: Cricket */}
             <div className="centered-card cricket-card">
-              <div className="card-image-wrapper cricket-bg">
-                <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
-                  <img src={cricket3d} alt="Cricket" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-                </div>
+              <div className="card-lottie-wrapper cricket-bg">
+                <Lottie animationData={rohitAnimation} loop={true} style={{ width: '100%', height: '100%', transform: 'scale(1.8)' }} />
               </div>
               <h2 className="card-heading">CRICKET</h2>
               <h3 className="card-subheading orange-text">TOURNAMENT VENUE</h3>
@@ -87,10 +87,8 @@ const Home = () => {
 
             {/* Card 2: Volleyball */}
             <div className="centered-card volleyball-card">
-              <div className="card-image-wrapper volleyball-bg">
-                <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
-                  <img src={volleyball3d} alt="Volleyball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-                </div>
+              <div className="card-lottie-wrapper volleyball-bg">
+                <Lottie animationData={volleyballAnimation} loop={true} style={{ width: '100%', height: '100%', transform: 'scale(1.8)' }} />
               </div>
               <h2 className="card-heading">VOLLEYBALL</h2>
               <h3 className="card-subheading blue-text">TOURNAMENT VENUE</h3>
@@ -105,10 +103,8 @@ const Home = () => {
 
             {/* Card 3: Pickleball */}
             <div className="centered-card pickleball-card">
-              <div className="card-image-wrapper pickleball-bg">
-                <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
-                  <img src={pickleball3d} alt="Pickleball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-                </div>
+              <div className="card-lottie-wrapper pickleball-bg">
+                <Lottie animationData={pickleballAnimation} loop={true} style={{ width: '100%', height: '100%', transform: 'scale(1.8)' }} />
               </div>
               <h2 className="card-heading">PICKLEBALL</h2>
               <h3 className="card-subheading green-text">TOURNAMENT VENUE</h3>

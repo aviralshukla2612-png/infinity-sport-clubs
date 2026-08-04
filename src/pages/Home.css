@@ -34,18 +34,30 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 13vh;
+  padding-top: 14vh;
 }
 
 .hero-left-content {
-  position: relative;
-  z-index: 10;
-  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  width: auto;
+  max-width: 60%;
+  margin-top: 4vh;
+}
+
+.hero-cta-btn {
+  font-size: 18px;
+  padding: 16px 32px;
+  border-radius: 12px;
+}
+
+@media (max-width: 1024px) {
+  .hero-left-content {
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 /* Badge */
@@ -60,7 +72,7 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   border: 1px solid rgba(255, 122, 0, 0.3);
 }
 
@@ -71,17 +83,17 @@
 /* Typography */
 .hero-title-main {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 64px;
+  font-size: 52px;
   line-height: 1.1;
   font-weight: 900;
   letter-spacing: -1.5px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   color: #fff;
 }
 
 @media (min-height: 900px) {
   .hero-title-main {
-    font-size: 72px;
+    font-size: 60px;
   }
 }
 
@@ -90,10 +102,10 @@
 }
 
 .hero-description {
-  font-size: 16px;
+  font-size: 15px;
   color: #B5B5B5;
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   max-width: 520px;
   font-weight: 500;
 }
@@ -103,7 +115,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 40px;
+  gap: 24px;
   margin-bottom: 0;
   margin-left: -4px;
 }
@@ -111,7 +123,7 @@
 .feature-item-inline {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .feature-icon-circle {
@@ -126,9 +138,9 @@
 }
 
 .feature-icon-circle-custom {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px; /* Slight rounded square shape in mockup */
+  width: 36px;
+  height: 36px;
+  border-radius: 10px; /* Slight rounded square shape in mockup */
   background: #FF7A00;
   display: flex;
   align-items: center;
@@ -144,13 +156,13 @@
 }
 
 .feature-text-inline strong {
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
   font-weight: 700;
 }
 
 .feature-text-inline span {
-  font-size: 14px;
+  font-size: 13px;
   color: #B5B5B5;
 }
 
@@ -168,7 +180,7 @@
 .floating-cards-centered {
   position: relative;
   width: 100%;
-  margin-top: 1vh;
+  margin-top: 4vh;
   z-index: 20;
   display: flex;
   justify-content: space-between;
@@ -224,6 +236,19 @@
 }
 
 /* Remove top strips */
+
+.card-lottie-wrapper {
+  width: 100%;
+  height: 180px;
+  background: transparent;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
 
 /* Image Wrapper */
 .card-image-wrapper {
