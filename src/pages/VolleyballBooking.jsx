@@ -52,6 +52,21 @@ const VolleyballBooking = () => {
   const [showChangePaymentModal, setShowChangePaymentModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('gpay');
   const [cardType, setCardType] = useState('credit');
+  const [cardDetails, setCardDetails] = useState({
+    number: '',
+    expiry: '',
+    cvv: '',
+    name: ''
+  });
+
+  const isPaymentValid = () => {
+    if (selectedPaymentMethod !== 'card') return true;
+    const isNumValid = cardDetails.number.replace(/\s/g, '').length === 16;
+    const isExpValid = /^(0[1-9]|1[0-2])\/\d{2}$/.test(cardDetails.expiry);
+    const isCvvValid = /^\d{3}$/.test(cardDetails.cvv);
+    const isNameValid = cardDetails.name.trim().length > 0;
+    return isNumValid && isExpValid && isCvvValid && isNameValid;
+  };
   
   // Player Details State
   const [playerDetails, setPlayerDetails] = useState({
@@ -336,7 +351,7 @@ const VolleyballBooking = () => {
                     </div>
                     <div className="form-group">
                       <label>Full Name</label>
-                      <input type="text" className="dark-input" placeholder="Your Name" value={playerDetails.fullName} onChange={(e) => setPlayerDetails({...playerDetails, fullName: e.target.value.replace(/[^a-zA-Z\s]/g, '')})} />
+                      <input type="text" className="dark-input" placeholder="Your Name" maxLength={50} value={playerDetails.fullName} onChange={(e) => setPlayerDetails({...playerDetails, fullName: e.target.value.replace(/[^a-zA-Z\s]/g, '')})} />
                     </div>
                     <div className="form-group">
                       <label>Phone Number</label>
@@ -356,7 +371,7 @@ const VolleyballBooking = () => {
                     </div>
                     <div className="form-group">
                       <label>Email Address</label>
-                      <input type="email" className="dark-input" placeholder="Your Email" value={playerDetails.email} onChange={(e) => setPlayerDetails({...playerDetails, email: e.target.value})} />
+                      <input type="email" className="dark-input" placeholder="Your Email" maxLength={100} value={playerDetails.email} onChange={(e) => setPlayerDetails({...playerDetails, email: e.target.value})} />
                       {playerDetails.email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(playerDetails.email) && (
                         <span style={{color: '#ef4444', fontSize: '0.75rem', marginTop: '4px', display: 'block'}}>Please enter a valid email address.</span>
                       )}
@@ -380,7 +395,7 @@ const VolleyballBooking = () => {
                     </div>
                     <div className="form-group">
                       <label>Special Requests (Optional)</label>
-                      <textarea className="dark-input" rows="3" placeholder="Any special requests..." value={playerDetails.requests} onChange={(e) => setPlayerDetails({...playerDetails, requests: e.target.value})}></textarea>
+                      <textarea className="dark-input" rows="3" placeholder="Any special requests..." maxLength={200} value={playerDetails.requests} onChange={(e) => setPlayerDetails({...playerDetails, requests: e.target.value})}></textarea>
                     </div>
                   </div>
 
@@ -394,7 +409,7 @@ const VolleyballBooking = () => {
                             <div style={{ fontSize: '0.85rem', color: '#007BFF', marginBottom: '0.5rem', fontWeight: 600 }}>Player {i + 2}</div>
                             <div className="form-group" style={{ marginBottom: '0.75rem' }}>
                               <label style={{ fontSize: '0.75rem', color: '#888' }}>Full Name</label>
-                              <input type="text" className="dark-input" style={{ padding: '0.5rem' }} placeholder="Player Name"
+                              <input type="text" className="dark-input" style={{ padding: '0.5rem' }} placeholder="Player Name" maxLength={50}
                                 value={otherPlayers[i]?.name || ''}
                                 onChange={(e) => {
                                   const newPlayers = [...otherPlayers];
@@ -818,19 +833,34 @@ const VolleyballBooking = () => {
                   >Debit Card</div>
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                  <input type="text" className="dark-input" placeholder="Card Number" />
+                  <input type="text" className="dark-input" placeholder="Card Number (16 digits)" maxLength={19} value={cardDetails.number} onChange={(e) => {
+                    const digits = e.target.value.replace(/\D/g, '').slice(0, 16);
+                    const formatted = digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+                    setCardDetails({...cardDetails, number: formatted});
+                  }} />
                   <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem'}}>
-                    <input type="text" className="dark-input" placeholder="MM/YY" />
-                    <input type="text" className="dark-input" placeholder="CVV" />
+                    <input type="text" className="dark-input" placeholder="MM/YY" maxLength={5} value={cardDetails.expiry} onChange={(e) => {
+                      let val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                      if (val.length >= 2) val = val.slice(0, 2) + '/' + val.slice(2);
+                      setCardDetails({...cardDetails, expiry: val});
+                    }} />
+                    <input type="password" className="dark-input" placeholder="CVV (3 digits)" maxLength={3} value={cardDetails.cvv} onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '').slice(0, 3);
+                      setCardDetails({...cardDetails, cvv: val});
+                    }} />
                   </div>
-                  <input type="text" className="dark-input" placeholder="Name on Card" />
+                  <input type="text" className="dark-input" placeholder="Name on Card" value={cardDetails.name} onChange={(e) => setCardDetails({...cardDetails, name: e.target.value})} />
+                  <div style={{display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem'}}>
+                    <input type="checkbox" id="saveCard" style={{accentColor: 'var(--primary-color)', width: '16px', height: '16px', cursor: 'pointer'}} />
+                    <label htmlFor="saveCard" style={{fontSize: '0.85rem', color: '#aaa', cursor: 'pointer'}}>Save this card for future payments</label>
+                  </div>
                 </div>
               </div>
             )}
 
             <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
-              <button className="modal-btn-confirm" style={{flex: 2}} onClick={() => {
+              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => {
                 const newId = '#BK' + Math.floor(Math.random() * 90000 + 10000);
                 const bookingRecord = {
                   id: newId,
