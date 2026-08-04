@@ -959,8 +959,8 @@ export default function AdminDashboard() {
                 ['Customer',b.customer],['Phone',b.phone],['Amount',`₹${b.amount.toLocaleString()}`],
                 ['Status',b.status],['Booked On',b.bookedAt]
               ].map(([k,v])=>(
-                <div key={k} style={{display:'flex',justifyContent:'space-between',padding:'0.55rem 0',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-                  <span style={{fontSize:'0.78rem',color:'#555'}}>{k}</span>
+                <div key={k} style={{display:'flex',flexWrap:'wrap',justifyContent:'space-between',gap:'0.3rem',padding:'0.55rem 0',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
+                  <span style={{fontSize:'0.78rem',color:'#555',minWidth:'80px'}}>{k}</span>
                   <span style={{fontSize:'0.82rem',color:'#ddd',fontWeight:500}}>{v}</span>
                 </div>
               ))}
