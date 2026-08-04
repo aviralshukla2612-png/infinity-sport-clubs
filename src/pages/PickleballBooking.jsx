@@ -867,8 +867,8 @@ const PickleballBooking = () => {
 
       {/* Custom Confirmation Modal */}
       {showConfirmBookingModal && (
-        <div className="modal-overlay animate-fade-in" style={{zIndex: 2000}}>
-          <div className="modal-content" style={{maxWidth: '400px', textAlign: 'center'}}>
+        <div className="payment-modal-overlay animate-fade-in" style={{zIndex: 2000}}>
+          <div className="payment-modal" style={{maxWidth: '400px', textAlign: 'center'}}>
             <h3 style={{color: '#fff', marginBottom: '1rem'}}>Confirm Booking</h3>
             <p style={{color: '#aaa', marginBottom: '2rem'}}>Are you sure you want to proceed with the payment and confirm this booking?</p>
             <div style={{display: 'flex', gap: '1rem'}}>
