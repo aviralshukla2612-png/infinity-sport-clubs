@@ -709,18 +709,28 @@ table.admin-table {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
   border-radius: 6px;
   background: transparent;
   border: 1px solid var(--admin-border);
   color: var(--admin-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.18s;
 }
 
-.admin-icon-btn:hover { border-color: var(--admin-orange); color: var(--admin-orange); }
-.admin-icon-btn.danger:hover { border-color: var(--admin-red); color: var(--admin-red); }
+.admin-icon-btn:hover { background: rgba(255,255,255,0.05); }
+
+.admin-icon-btn.view { color: var(--admin-orange); background: rgba(255,122,0,0.08); border-color: rgba(255,122,0,0.3); }
+.admin-icon-btn.view:hover { background: rgba(255,122,0,0.15); }
+
+.admin-icon-btn.edit { color: var(--admin-blue); background: rgba(0,123,255,0.08); border-color: rgba(0,123,255,0.3); }
+.admin-icon-btn.edit:hover { background: rgba(0,123,255,0.15); }
+
+.admin-icon-btn.danger { color: var(--admin-red); background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.3); }
+.admin-icon-btn.danger:hover { background: rgba(239,68,68,0.15); }
 
 /* ═══════════════════════════════════
    STATS (mini)

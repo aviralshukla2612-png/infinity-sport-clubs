@@ -4,7 +4,7 @@ import {
   Calendar, ChevronDown, ChevronRight, ChevronLeft,
   ClipboardList, User, LogOut, Search, RefreshCw, Eye,
   X, Download, MapPin, Share2, XCircle, CheckCircle2,
-  Clock, ArrowLeft, Printer, Menu
+  Clock, ArrowLeft, Printer, Menu, Pencil, Trash2
 } from 'lucide-react';
 import { useGlobalBooking } from '../context/GlobalBookingContext';
 import logo from '../assets/images/logo.jpg';
@@ -501,8 +501,16 @@ export default function SubAdminDashboard() {
                     </td>
                     <td data-label="Booking Date" style={{fontSize:'0.72rem',color:'#666',whiteSpace:'nowrap'}}>{b.bookedAt}</td>
                     <td data-label="Action">
-                      <button className="sa-view-btn" onClick={() => setViewBooking(b)}>
+                      <button className="sa-action-btn view" onClick={() => setViewBooking(b)}>
                         <Eye size={12}/> View
+                      </button>
+                      <button className="sa-action-btn edit" onClick={() => alert('Edit triggered for ' + b.id)}>
+                        <Pencil size={12}/> Edit
+                      </button>
+                      <button className="sa-action-btn danger" onClick={() => {
+                        if(window.confirm('Delete this booking?')) alert('Booking deleted');
+                      }}>
+                        <Trash2 size={12}/> Delete
                       </button>
                     </td>
                   </tr>

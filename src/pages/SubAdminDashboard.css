@@ -437,15 +437,12 @@ table.sa-table {
 .sa-badge.completed  { background: rgba(0,123,255,0.15);   color: #007BFF; }
 
 /* action btn */
-.sa-view-btn {
+.sa-action-btn {
   display: flex;
   align-items: center;
   gap: 0.3rem;
   padding: 0.3rem 0.6rem;
-  background: rgba(255,122,0,0.1);
-  border: 1px solid rgba(255,122,0,0.25);
   border-radius: 6px;
-  color: #FF7A00;
   font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
@@ -453,7 +450,14 @@ table.sa-table {
   white-space: nowrap;
 }
 
-.sa-view-btn:hover { background: rgba(255,122,0,0.2); }
+.sa-action-btn.view { color: #FF7A00; background: rgba(255,122,0,0.1); border: 1px solid rgba(255,122,0,0.25); }
+.sa-action-btn.view:hover { background: rgba(255,122,0,0.2); }
+
+.sa-action-btn.edit { color: #007BFF; background: rgba(0,123,255,0.1); border: 1px solid rgba(0,123,255,0.25); }
+.sa-action-btn.edit:hover { background: rgba(0,123,255,0.2); }
+
+.sa-action-btn.danger { color: #ef4444; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); }
+.sa-action-btn.danger:hover { background: rgba(239,68,68,0.2); }
 
 /* ─── PAGINATION ─── */
 .sa-pagination {

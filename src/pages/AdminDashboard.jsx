@@ -553,11 +553,11 @@ export default function AdminDashboard() {
                     <td data-label="Status"><span className={`admin-badge ${STATUS_COLORS[b.status]}`}>{b.status}</span></td>
                     <td data-label="Action">
                       <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/></button>
-                        <button className="admin-icon-btn" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/></button>
+                        <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/> View</button>
+                        <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/> Edit</button>
                         <button className="admin-icon-btn danger" title="Cancel" onClick={() => {
                           if(window.confirm('Cancel this booking?')) cancelBooking(b.id);
-                        }}><Trash2 size={12}/></button>
+                        }}><Trash2 size={12}/> Cancel</button>
                       </div>
                     </td>
                   </tr>
@@ -629,11 +629,11 @@ export default function AdminDashboard() {
                     <td data-label="Status"><span className={`admin-badge ${c.status}`}>{c.status}</span></td>
                     <td data-label="Action">
                       <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn" onClick={()=>setModal({type:'customer',data:c})}><Eye size={12}/></button>
-                        <button className="admin-icon-btn" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={12}/></button>
+                        <button className="admin-icon-btn view" onClick={()=>setModal({type:'customer',data:c})}><Eye size={12}/> View</button>
+                        <button className="admin-icon-btn edit" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={12}/> Edit</button>
                         <button className="admin-icon-btn danger" onClick={() => {
                           if(window.confirm('Delete this customer?')) alert('Customer deleted.');
-                        }}><Trash2 size={12}/></button>
+                        }}><Trash2 size={12}/> Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -844,11 +844,11 @@ export default function AdminDashboard() {
                     <td data-label="Last Login" style={{color:'#666',fontSize:'0.75rem'}}>{a.lastLogin}</td>
                     <td data-label="Action">
                       <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn" onClick={() => setModal({type:'admin', data:a})}><Eye size={12}/></button>
-                        <button className="admin-icon-btn" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={12}/></button>
+                        <button className="admin-icon-btn view" onClick={() => setModal({type:'admin', data:a})}><Eye size={12}/> View</button>
+                        <button className="admin-icon-btn edit" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={12}/> Edit</button>
                         {a.role !== 'Super Admin' && <button className="admin-icon-btn danger" onClick={() => {
                           if(window.confirm('Delete this admin?')) alert('Admin deleted.');
-                        }}><Trash2 size={12}/></button>}
+                        }}><Trash2 size={12}/> Delete</button>}
                       </div>
                     </td>
                   </tr>
@@ -1299,7 +1299,7 @@ export default function AdminDashboard() {
           <div className="admin-modal animate-fade-in" style={{maxWidth: '400px'}}>
             <div className="admin-modal-header">
               <h3 className="admin-modal-title">Confirm Logout</h3>
-              <button className="admin-icon-btn" onClick={() => setShowLogoutModal(false)}><XCircle size={18}/></button>
+              <button className="admin-icon-btn danger" style={{padding: '0.35rem'}} onClick={() => setShowLogoutModal(false)}><XCircle size={18}/></button>
             </div>
             <div className="admin-modal-body">
               <p style={{color: '#888', fontSize: '0.9rem'}}>Are you sure you want to log out of the admin dashboard?</p>
