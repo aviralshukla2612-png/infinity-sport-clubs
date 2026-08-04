@@ -626,12 +626,25 @@ table.sa-table {
   }
 }
 
+.sa-booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
 @media (max-width: 768px) {
-  /* Fix Booking modal hero section */
-  .sa-booking-hero { flex-direction: column !important; align-items: stretch !important; text-align: center !important; }
-  .sa-booking-hero img { width: 100% !important; height: 160px !important; }
+  /* Fix Booking modal hero section - DO NOT make it vertical, keep small image and wrap */
+  .sa-booking-hero { flex-wrap: wrap !important; justify-content: center !important; }
+  .sa-booking-hero img { width: 90px !important; height: 65px !important; }
+  
+  /* Make modal full screen on mobile to give maximum height */
+  .sa-booking-modal { max-height: 100vh !important; height: 100vh !important; border-radius: 0 !important; }
   
   /* Fix Settings / Profile layout */
   .sa-settings-layout { flex-direction: column !important; }
   .sa-settings-layout > div { min-width: 0 !important; }
+  
+  /* Fix Booking Details grid */
+  .sa-booking-grid { grid-template-columns: 1fr !important; }
 }

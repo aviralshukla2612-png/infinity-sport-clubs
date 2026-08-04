@@ -77,7 +77,7 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
       background:'rgba(0,0,0,0.8)', backdropFilter:'blur(6px)',
       display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem'
     }} onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{
+      <div className="sa-booking-modal" style={{
         background:'#111', borderRadius:'16px', border:'1px solid #222',
         width:'100%', maxWidth:'680px', maxHeight:'90vh',
         overflow:'hidden', display:'flex', flexDirection:'column',
@@ -127,7 +127,7 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
         </div>
 
         {/* Tabs */}
-        <div style={{display:'flex',gap:'2px',padding:'0.6rem 1.25rem 0',borderBottom:'1px solid #1e1e1e',background:'#111'}}>
+        <div className="sa-modal-tabs" style={{display:'flex',gap:'2px',padding:'0.6rem 1.25rem 0',borderBottom:'1px solid #1e1e1e',background:'#111', flexWrap: 'wrap'}}>
           {TABS.map(t => (
             <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
               padding:'0.4rem 1rem',border:'none',cursor:'pointer',fontSize:'0.82rem',fontWeight:500,
@@ -146,7 +146,7 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
           {activeTab==='booking' && (
             <div>
               {/* Detail grid */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.65rem',marginBottom:'1.25rem'}}>
+              <div className="sa-booking-grid">
                 {[
                   {icon:<Calendar size={13}/>, label:'Date',     val:booking.date},
                   {icon:<Clock size={13}/>,    label:'Time',     val:booking.timeSlot},
