@@ -773,7 +773,7 @@ const CricketBooking = () => {
                    </div>
                    <div className="form-group" style={{flex: 1}}>
                      <label style={{display: 'block', fontSize: '0.8rem', color: '#aaa', marginBottom: '0.4rem'}}>CVV</label>
-                     <input type="text" className="dark-input" placeholder="123" type="password" maxLength={3} />
+                     <input type="password" className="dark-input" placeholder="123" maxLength={3} />
                    </div>
                  </div>
                </div>
