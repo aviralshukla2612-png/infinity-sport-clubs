@@ -46,10 +46,10 @@ const Navbar = () => {
             </button>
           </div>
           <Link to="/" className="nav-link active" onClick={(e) => handleNavClick(e, '')}>Home</Link>
-          <Link to="/#about" className="nav-link" onClick={(e) => handleNavClick(e, '#about')}>About Us</Link>
-          <Link to="/#facilities" className="nav-link" onClick={(e) => handleNavClick(e, '#facilities')}>Facilities</Link>
-          <Link to="/#gallery" className="nav-link" onClick={(e) => handleNavClick(e, '#gallery')}>Gallery</Link>
-          <Link to="/#contact" className="nav-link" onClick={(e) => handleNavClick(e, '#contact')}>Contact</Link>
+          <Link to="/" className="nav-link" onClick={(e) => handleNavClick(e, '')}>About Us</Link>
+          <Link to="/" className="nav-link" onClick={(e) => handleNavClick(e, '')}>Facilities</Link>
+          <Link to="/" className="nav-link" onClick={(e) => handleNavClick(e, '')}>Gallery</Link>
+          <Link to="/" className="nav-link" onClick={(e) => handleNavClick(e, '')}>Contact</Link>
           
           {/* Mobile only actions in menu */}
           <div className="mobile-only-actions">
