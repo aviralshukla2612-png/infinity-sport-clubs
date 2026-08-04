@@ -34,7 +34,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 12vh;
+  padding-top: 8vh;
 }
 
 .hero-left-content {
@@ -168,7 +168,7 @@
 .floating-cards-centered {
   position: relative;
   width: 100%;
-  margin-top: 6vh;
+  margin-top: 3vh;
   z-index: 20;
   display: flex;
   justify-content: space-between;

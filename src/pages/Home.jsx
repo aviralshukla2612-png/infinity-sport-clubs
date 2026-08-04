@@ -2,6 +2,9 @@ import React from 'react';
 import { Trophy, ArrowRight, MapPin, Shield, Map } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import heroback from '../assets/images/heroback.png';
+import cricket3d from '../assets/images/cricket_3d.png';
+import volleyball3d from '../assets/images/volleyball_3d.png';
+import pickleball3d from '../assets/images/pickleball_3d.png';
 import './Home.css';
 
 const Home = () => {
@@ -68,7 +71,7 @@ const Home = () => {
             <div className="centered-card cricket-card">
               <div className="card-image-wrapper cricket-bg">
                 <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
-                  <img src="/src/assets/images/cricket_3d.png" alt="Cricket" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  <img src={cricket3d} alt="Cricket" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 </div>
               </div>
               <h2 className="card-heading">CRICKET</h2>
@@ -86,7 +89,7 @@ const Home = () => {
             <div className="centered-card volleyball-card">
               <div className="card-image-wrapper volleyball-bg">
                 <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
-                  <img src="/src/assets/images/volleyball_3d.png" alt="Volleyball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  <img src={volleyball3d} alt="Volleyball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 </div>
               </div>
               <h2 className="card-heading">VOLLEYBALL</h2>
@@ -104,7 +107,7 @@ const Home = () => {
             <div className="centered-card pickleball-card">
               <div className="card-image-wrapper pickleball-bg">
                 <div className="card-icon-3d" style={{ width: '100%', height: '100%' }}>
-                  <img src="/src/assets/images/pickleball_3d.png" alt="Pickleball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  <img src={pickleball3d} alt="Pickleball" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                 </div>
               </div>
               <h2 className="card-heading">PICKLEBALL</h2>
