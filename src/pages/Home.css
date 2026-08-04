@@ -9,7 +9,7 @@
 /* Premium Hero Layout - 100vh Fixed */
 .premium-hero {
   position: relative;
-  height: 100vh;
+  height: 100vh; /* Strictly 100vh */
   width: 100vw;
   background-size: cover;
   background-position: center;
@@ -26,7 +26,7 @@
 .premium-hero-container {
   position: relative;
   width: 100%;
-  max-width: 1280px; 
+  max-width: 1280px; /* A slight increase from 1100px to push it a little to the left, aligning with the pole */
   margin: 0 auto;
   height: 100%;
   z-index: 10;
@@ -34,7 +34,7 @@
 
 .hero-left-content {
   position: absolute;
-  top: 90px; /* Tightened from 12vh to fit laptop screens */
+  top: 12vh;
   left: 0;
   z-index: 10;
   display: flex;
@@ -150,7 +150,7 @@
 /* Cards Area */
 .floating-cards-centered {
   position: absolute;
-  bottom: 15px; /* Tightened from 2vh to fit laptop screens */
+  bottom: 2vh;
   left: 0;
   width: 100%;
   z-index: 20;
@@ -251,23 +251,6 @@
 .blue-text { color: #2F80ED; }
 .green-text { color: #84CC16; }
 
-/* Perfect Proportional Scaling for Small Laptops */
-@media (max-height: 880px) and (min-width: 1024px) {
-  .premium-hero-container {
-    transform: scale(0.9);
-  }
-}
-@media (max-height: 780px) and (min-width: 1024px) {
-  .premium-hero-container {
-    transform: scale(0.82);
-  }
-}
-@media (max-height: 700px) and (min-width: 1024px) {
-  .premium-hero-container {
-    transform: scale(0.72);
-  }
-}
-
 .card-body {
   color: rgba(255,255,255,0.7);
   font-size: 13px;
@@ -318,6 +301,7 @@
   .hero-left-content {
     position: relative;
     top: 0;
+    margin-top: 12vh;
     padding: 0 20px;
     align-items: center;
     text-align: center;
@@ -338,8 +322,8 @@
     bottom: auto;
     flex-direction: column;
     align-items: center;
-    margin-top: 40px;
-    padding-bottom: 60px;
+    margin-top: 60px;
+    padding-bottom: 80px;
   }
   
   .hero-wave {
