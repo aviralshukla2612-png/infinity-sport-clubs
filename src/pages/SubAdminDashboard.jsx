@@ -110,7 +110,7 @@ const BookingModal = ({ booking, onClose, onCancel }) => {
         </div>
 
         {/* Ground Hero */}
-        <div style={{display:'flex',gap:'1rem',padding:'1rem 1.25rem',borderBottom:'1px solid #1e1e1e',background:'#0d0d0d',alignItems:'center'}}>
+        <div className="sa-booking-hero" style={{display:'flex',gap:'1rem',padding:'1rem 1.25rem',borderBottom:'1px solid #1e1e1e',background:'#0d0d0d',alignItems:'center'}}>
           <img src={SPORT_IMAGES[booking.sport]} alt={booking.sportLabel}
             style={{width:'115px',height:'82px',objectFit:'cover',borderRadius:'10px',flexShrink:0}}/>
           <div style={{flex:1,minWidth:0}}>
@@ -540,7 +540,7 @@ export default function SubAdminDashboard() {
                 <p>Manage your sub-admin account details</p>
               </div>
               
-              <div style={{display: 'flex', gap: '2rem', flexWrap: 'wrap'}}>
+              <div className="sa-settings-layout" style={{display: 'flex', gap: '2rem', flexWrap: 'wrap'}}>
                 <div style={{flex: '1', minWidth: '300px', background: '#0d0d0d', border: '1px solid #1e1e1e', borderRadius: '16px', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}>
                   <div style={{width: '100px', height: '100px', borderRadius: '50%', background: 'linear-gradient(135deg, #007BFF, #00C6FF)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 800, color: '#fff', marginBottom: '1.5rem', boxShadow: '0 10px 25px rgba(0,123,255,0.4)'}}>
                     SA
@@ -566,7 +566,7 @@ export default function SubAdminDashboard() {
                   </div>
                 </div>
 
-                <div style={{flex: '2', minWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+                <div className="sa-settings-right" style={{flex: '2', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
                   <div style={{background: '#0d0d0d', border: '1px solid #1e1e1e', borderRadius: '16px', padding: '2rem'}}>
                     <h3 style={{margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', color: '#fff'}}><ClipboardList size={18} color="#007BFF"/> Performance Summary</h3>
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem'}}>
