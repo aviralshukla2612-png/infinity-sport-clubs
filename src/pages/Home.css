@@ -2,14 +2,14 @@
 
 .home-page {
   background-color: #090909;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Premium Hero Layout - Minimum 100vh Fixed */
+/* Premium Hero Layout - 100vh Fixed */
 .premium-hero {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
   background-size: cover;
   background-position: center;
@@ -28,17 +28,14 @@
   width: 100%;
   max-width: 1280px; 
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100%;
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-top: 12vh;
-  padding-bottom: 4vh;
 }
 
 .hero-left-content {
-  position: relative;
+  position: absolute;
+  top: 90px; /* Tightened from 12vh to fit laptop screens */
+  left: 0;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -152,7 +149,9 @@
 
 /* Cards Area */
 .floating-cards-centered {
-  position: relative;
+  position: absolute;
+  bottom: 15px; /* Tightened from 2vh to fit laptop screens */
+  left: 0;
   width: 100%;
   z-index: 20;
   display: flex;
