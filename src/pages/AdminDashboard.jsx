@@ -555,9 +555,9 @@ export default function AdminDashboard() {
                       <div style={{display:'flex',gap:'0.3rem'}}>
                         <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/> View</button>
                         <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/> Edit</button>
-                        <button className="admin-icon-btn danger" title="Cancel" onClick={() => {
-                          if(window.confirm('Cancel this booking?')) cancelBooking(b.id);
-                        }}><Trash2 size={12}/> Cancel</button>
+                        <button className="admin-icon-btn danger" title="Delete" onClick={() => {
+                          if(window.confirm('Delete this booking?')) cancelBooking(b.id);
+                        }}><Trash2 size={12}/> Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -970,8 +970,8 @@ export default function AdminDashboard() {
               {b.status === 'confirmed' || b.status === 'upcoming' ? (
                 <>
                   <button className="admin-action-btn primary" style={{background: '#ef4444'}} onClick={() => {
-                     if(window.confirm('Cancel this booking?')) { cancelBooking(b.id); close(); }
-                  }}>Cancel</button>
+                    if(window.confirm('Delete this booking?')) { cancelBooking(b.id); close(); }
+                  }}>Delete Booking</button>
                   <button className="admin-action-btn primary" style={{background: '#eab308'}} onClick={() => {
                      if(window.confirm('Process refund for this booking?')) { processRefund(b.id); close(); }
                   }}>Refund</button>
