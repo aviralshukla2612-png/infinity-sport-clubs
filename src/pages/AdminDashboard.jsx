@@ -268,9 +268,9 @@ export default function AdminDashboard() {
                 <tbody>
                   {SLOTS_DATA[slotSport].map((row, i) => (
                     <tr key={i}>
-                      <td style={{color:'#888',fontSize:'0.7rem',textAlign:'left',whiteSpace:'nowrap'}}>{row.time}</td>
+                      <td data-label="Time" style={{color:'#888',fontSize:'0.7rem',textAlign:'left',whiteSpace:'nowrap'}}>{row.time}</td>
                       {Object.entries(row).filter(([k])=>k!=='time').map(([k, val]) => (
-                        <td key={k}>
+                        <td key={k} data-label={slotSport === 'cricket' ? k.replace('g','Ground ') : slotSport === 'volleyball' ? (k==='g1'?'Court A':'Court B') : (k==='g1'?'Arena 1':'Arena 2')}>
                           <span
                             className={`admin-slot-cell ${val}`}
                             onClick={() => setModal({ type:'slotAction', data:{ time:row.time, court:k, status:val, sport:slotSport } })}
@@ -346,22 +346,22 @@ export default function AdminDashboard() {
               <tbody>
                 {BOOKINGS.slice(0,5).map(b => (
                   <tr key={b.id}>
-                    <td style={{fontFamily:'monospace',color:'#666',fontSize:'0.73rem'}}>{b.id}</td>
-                    <td>
+                    <td data-label="Booking ID" style={{fontFamily:'monospace',color:'#666',fontSize:'0.73rem'}}>{b.id}</td>
+                    <td data-label="Sport">
                       <div style={{display:'flex',alignItems:'center',gap:'0.4rem'}}>
                         <span>{SPORT_ICONS[b.sport]}</span>
                         <span>{b.sportLabel}</span>
                       </div>
                     </td>
-                    <td>{b.date}</td>
-                    <td style={{whiteSpace:'nowrap'}}>{b.timeSlot}</td>
-                    <td>
+                    <td data-label="Date">{b.date}</td>
+                    <td data-label="Time Slot" style={{whiteSpace:'nowrap'}}>{b.timeSlot}</td>
+                    <td data-label="Customer">
                       <div style={{fontWeight:500}}>{b.customer}</div>
                       <div style={{fontSize:'0.68rem',color:'#555'}}>{b.phone}</div>
                     </td>
-                    <td style={{fontWeight:600}}>₹{b.amount.toLocaleString()}</td>
-                    <td><span className={`admin-badge ${STATUS_COLORS[b.status]}`}>{b.status}</span></td>
-                    <td>
+                    <td data-label="Amount" style={{fontWeight:600}}>₹{b.amount.toLocaleString()}</td>
+                    <td data-label="Status"><span className={`admin-badge ${STATUS_COLORS[b.status]}`}>{b.status}</span></td>
+                    <td data-label="Action">
                       <button className="admin-view-btn" onClick={() => setModal({type:'booking',data:b})}>
                         <Eye size={11}/> View
                       </button>
@@ -454,7 +454,7 @@ export default function AdminDashboard() {
                   <tr key={i}>
                     <td data-label="Time" style={{color:'#888',fontSize:'0.7rem',textAlign:'left',whiteSpace:'nowrap'}}>{row.time}</td>
                     {Object.entries(row).filter(([k])=>k!=='time').map(([k, val]) => (
-                      <td key={k} data-label={slotSport === 'cricket' ? k.replace('g','Ground ') : slotSport === 'volleyball' ? (k==='c1'?'Court A':'Court B') : (k==='a1'?'Arena 1':'Arena 2')}>
+                      <td key={k} data-label={slotSport === 'cricket' ? k.replace('g','Ground ') : slotSport === 'volleyball' ? (k==='g1'?'Court A':'Court B') : (k==='g1'?'Arena 1':'Arena 2')}>
                         <span
                           className={`admin-slot-cell ${val}`}
                           onClick={() => setModal({ type:'slotAction', data:{ time:row.time, court:k, status:val, sport:slotSport } })}
@@ -823,8 +823,8 @@ export default function AdminDashboard() {
               <tbody>
                 {ADMINS.map(a => (
                   <tr key={a.id}>
-                    <td style={{fontFamily:'monospace',color:'#555',fontSize:'0.72rem'}}>{a.id}</td>
-                    <td>
+                    <td data-label="ID" style={{fontFamily:'monospace',color:'#555',fontSize:'0.72rem'}}>{a.id}</td>
+                    <td data-label="Name">
                       <div style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
                         <div style={{width:28,height:28,borderRadius:'50%',background:'linear-gradient(135deg,#FF7A00,#e66d00)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'0.65rem',fontWeight:700}}>
                           {a.name.split(' ').map(n=>n[0]).join('')}
@@ -832,17 +832,17 @@ export default function AdminDashboard() {
                         {a.name}
                       </div>
                     </td>
-                    <td style={{color:'#888',fontSize:'0.78rem'}}>{a.email}</td>
-                    <td>
+                    <td data-label="Email" style={{color:'#888',fontSize:'0.78rem'}}>{a.email}</td>
+                    <td data-label="Role">
                       <span style={{
                         background: a.role==='Super Admin'?'rgba(255,122,0,0.12)':'rgba(0,123,255,0.1)',
                         color: a.role==='Super Admin'?'#FF7A00':'#007BFF',
                         padding:'0.2rem 0.6rem',borderRadius:'20px',fontSize:'0.68rem',fontWeight:700
                       }}>{a.role}</span>
                     </td>
-                    <td><span className={`admin-badge ${a.status}`}>{a.status}</span></td>
-                    <td style={{color:'#666',fontSize:'0.75rem'}}>{a.lastLogin}</td>
-                    <td>
+                    <td data-label="Status"><span className={`admin-badge ${a.status}`}>{a.status}</span></td>
+                    <td data-label="Last Login" style={{color:'#666',fontSize:'0.75rem'}}>{a.lastLogin}</td>
+                    <td data-label="Action">
                       <div style={{display:'flex',gap:'0.3rem'}}>
                         <button className="admin-icon-btn" onClick={() => setModal({type:'admin', data:a})}><Eye size={12}/></button>
                         <button className="admin-icon-btn" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={12}/></button>
