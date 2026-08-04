@@ -90,6 +90,15 @@ const CricketBooking = () => {
     }
   };
 
+  const isMounted = React.useRef(false);
+  React.useEffect(() => {
+    if (isMounted.current) {
+      document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      isMounted.current = true;
+    }
+  }, [step]);
+
   const getNextButtonText = () => {
     switch(step) {
       case 1: return 'Next: Select Date';
@@ -227,7 +236,10 @@ const CricketBooking = () => {
                         className={`ground-card ${selectedGroundId === ground.id ? 'selected' : ''}`}
                         onClick={() => {
                           setSelectedGroundId(ground.id);
-                          setTimeout(() => setStep(2), 300);
+                          setTimeout(() => {
+                            setStep(2);
+                            document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 300);
                         }}
                       >
                         {selectedGroundId === ground.id && (
@@ -292,7 +304,10 @@ const CricketBooking = () => {
                             onClick={() => {
                               if (!isPast) {
                                 setSelectedDate(day);
-                                setTimeout(() => setStep(3), 300);
+                                setTimeout(() => {
+                                  setStep(3);
+                                  document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }, 300);
                               }
                             }}
                             style={isPast ? {opacity: 0.3, cursor: 'not-allowed', pointerEvents: 'none'} : {cursor:'pointer'}}
@@ -330,7 +345,10 @@ const CricketBooking = () => {
                         onClick={() => {
                           if (slot.status !== 'booked') {
                             setSelectedTimeSlot(slot.time);
-                            setTimeout(() => setStep(4), 300);
+                            setTimeout(() => {
+                              setStep(4);
+                              document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 300);
                           }
                         }}
                       >
