@@ -38,21 +38,21 @@ const Home = () => {
 
             <div className="hero-features-row" style={{ justifyContent: 'flex-start' }}>
               <div className="feature-item-inline">
-                <div className="feature-icon-circle"><Map size={18} /></div>
+                <div className="feature-icon-circle-custom"><Map size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
                   <strong>3 Acres</strong>
                   <span>Sports Campus</span>
                 </div>
               </div>
               <div className="feature-item-inline">
-                <div className="feature-icon-circle"><Trophy size={18} /></div>
+                <div className="feature-icon-circle-custom"><Trophy size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
                   <strong>Professional</strong>
                   <span>Facilities</span>
                 </div>
               </div>
               <div className="feature-item-inline">
-                <div className="feature-icon-circle"><Shield size={18} /></div>
+                <div className="feature-icon-circle-custom"><Shield size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
                   <strong>Safe & Secure</strong>
                   <span>Environment</span>
@@ -68,7 +68,7 @@ const Home = () => {
             <div className="centered-card cricket-card">
               <div className="card-image-wrapper cricket-bg">
                 <div className="card-icon-3d">
-                  <Trophy size={48} color="#FF7A00" strokeWidth={1.5} />
+                  <img src="/src/assets/images/cricket_3d.png" alt="Cricket" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
               </div>
               <h2 className="card-heading">CRICKET</h2>
@@ -78,7 +78,7 @@ const Home = () => {
                 tournaments and corporate matches.
               </p>
               <button className="card-action-btn orange-btn" onClick={() => navigate('/cricket-booking')}>
-                Book Cricket Ground
+                Book Cricket Ground &rarr;
               </button>
             </div>
 
@@ -86,22 +86,17 @@ const Home = () => {
             <div className="centered-card volleyball-card">
               <div className="card-image-wrapper volleyball-bg">
                 <div className="card-icon-3d">
-                  <div style={{
-                    width: '50px', height: '50px', borderRadius: '50%',
-                    border: '4px solid #2D7FFF', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'linear-gradient(45deg, transparent 40%, rgba(45,127,255,0.4) 50%, transparent 60%)'
-                  }}></div>
+                  <img src="/src/assets/images/volleyball_3d.png" alt="Volleyball" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
               </div>
               <h2 className="card-heading">VOLLEYBALL</h2>
               <h3 className="card-subheading blue-text">TOURNAMENT VENUE</h3>
               <p className="card-body">
                 Professional volleyball court<br/>
-                for matches,<br/>
-                training and events.
+                for matches, training & events.
               </p>
               <button className="card-action-btn blue-btn" onClick={() => navigate('/volleyball-booking')}>
-                Book Volleyball Court
+                Book Volleyball Court &rarr;
               </button>
             </div>
 
@@ -109,18 +104,17 @@ const Home = () => {
             <div className="centered-card pickleball-card">
               <div className="card-image-wrapper pickleball-bg">
                 <div className="card-icon-3d">
-                  <Shield size={48} color="#8AD400" strokeWidth={1.5} />
+                  <img src="/src/assets/images/pickleball_3d.png" alt="Pickleball" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
               </div>
               <h2 className="card-heading">PICKLEBALL</h2>
               <h3 className="card-subheading green-text">TOURNAMENT VENUE</h3>
               <p className="card-body">
                 Dedicated pickleball courts<br/>
-                for all ages<br/>
-                and skill levels.
+                for all ages and skill levels.
               </p>
               <button className="card-action-btn green-btn" onClick={() => navigate('/pickleball-booking')}>
-                Book Pickleball Court
+                Book Pickleball Court &rarr;
               </button>
             </div>
 
