@@ -148,7 +148,7 @@ const PickleballBooking = () => {
   ];
 
   return (
-    <div className="pickleball-booking-container animate-fade-in">
+    <div className="pickleball-booking-container">
       {/* Parallax Hero Section */}
       <div className="parallax-hero">
         <div className="parallax-overlay"></div>

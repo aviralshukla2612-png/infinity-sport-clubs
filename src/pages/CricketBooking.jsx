@@ -151,7 +151,7 @@ const CricketBooking = () => {
   ];
 
   return (
-    <div className="cricket-booking-container animate-fade-in">
+    <div className="cricket-booking-container">
       {/* Parallax Hero Section */}
       <div className="parallax-hero">
         <div className="parallax-overlay"></div>
