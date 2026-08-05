@@ -827,6 +827,17 @@
 }
 
 @media (max-width: 900px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  .hero-subtitle {
+    margin-left: 0;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  .hero-title-section {
+    margin-bottom: 0.5rem;
+  }
   .booking-grid {
     grid-template-columns: 1fr;
   }
@@ -837,12 +848,17 @@
     grid-template-columns: 1fr;
   }
   .steps-indicator {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 1rem;
+    justify-content: flex-start;
+  }
+  .step-item {
+    white-space: nowrap;
   }
   .step-line {
-    display: none;
+    display: block;
+    min-width: 20px;
   }
 }
 
