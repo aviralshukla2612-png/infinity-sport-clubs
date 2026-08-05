@@ -69,7 +69,6 @@ const VolleyballBooking = () => {
     return isNumValid && isExpValid && isCvvValid && isNameValid;
   };
   
-  // Player Details State
   const [playerDetails, setPlayerDetails] = useState({
     fullName: '',
     phone: '',
@@ -77,8 +76,6 @@ const VolleyballBooking = () => {
     aadhar: '',
     requests: ''
   });
-  const [otherPlayers, setOtherPlayers] = useState([]);
-  const [showPlayersModal, setShowPlayersModal] = useState(false);
   
   const selectedGround = grounds.find(g => g.id === selectedGroundId);
 
@@ -116,15 +113,6 @@ const VolleyballBooking = () => {
       if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !emailRegex.test(playerDetails.email) || !playerDetails.aadhar.trim()) {
         return true;
       }
-      const numOtherPlayers = playerCount === '10+' ? 9 : playerCount - 1;
-      if (numOtherPlayers > 0) {
-        for (let i = 0; i < numOtherPlayers; i++) {
-          const p = otherPlayers[i];
-          if (!p || !p.name?.trim() || !p.aadhar?.trim() || p.aadhar.length < 14) {
-            return true;
-          }
-        }
-      }
     }
     return false;
   };
@@ -142,11 +130,6 @@ const VolleyballBooking = () => {
     if (!name) return 'Player';
     return name.trim().split(' ')[0];
   };
-
-  const allPlayersList = [
-    playerDetails.fullName,
-    ...otherPlayers.slice(0, playerCount === '10+' ? 9 : playerCount - 1).map(p => p?.name)
-  ];
 
   return (
     <div className="volleyball-booking-container">
@@ -428,47 +411,6 @@ const VolleyballBooking = () => {
                       <textarea className="dark-input" rows="3" placeholder="Any special requests..." maxLength={200} value={playerDetails.requests} onChange={(e) => setPlayerDetails({...playerDetails, requests: e.target.value})}></textarea>
                     </div>
                   </div>
-
-                  {/* Other Players */}
-                  {(playerCount === '10+' ? 9 : playerCount - 1) > 0 && (
-                    <div style={{ marginTop: '2rem' }}>
-                      <h4 style={{ marginBottom: '1rem', color: '#fff', borderBottom: '1px solid #333', paddingBottom: '0.5rem' }}>Other Players Details</h4>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                        {[...Array(playerCount === '10+' ? 9 : playerCount - 1)].map((_, i) => (
-                          <div key={i} style={{ background: '#111', padding: '1rem', borderRadius: '8px', border: '1px solid #222' }}>
-                            <div style={{ fontSize: '0.85rem', color: '#007BFF', marginBottom: '0.5rem', fontWeight: 600 }}>Player {i + 2}</div>
-                            <div className="form-group" style={{ marginBottom: '0.75rem' }}>
-                              <label style={{ fontSize: '0.75rem', color: '#888' }}>Full Name</label>
-                              <input type="text" className="dark-input" style={{ padding: '0.5rem' }} placeholder="Player Name" maxLength={50}
-                                value={otherPlayers[i]?.name || ''}
-                                onChange={(e) => {
-                                  const newPlayers = [...otherPlayers];
-                                  if (!newPlayers[i]) newPlayers[i] = {};
-                                  newPlayers[i].name = e.target.value.replace(/[^a-zA-Z\s]/g, '');
-                                  setOtherPlayers(newPlayers);
-                                }} 
-                              />
-                            </div>
-                            <div className="form-group" style={{ marginBottom: '0' }}>
-                              <label style={{ fontSize: '0.75rem', color: '#888' }}>Aadhar Card</label>
-                              <input type="text" className="dark-input" style={{ padding: '0.5rem' }} placeholder="XXXX XXXX XXXX"
-                                maxLength={14}
-                                value={otherPlayers[i]?.aadhar || ''}
-                                onChange={(e) => {
-                                  const digits = e.target.value.replace(/\D/g, '').slice(0, 12);
-                                  const fmt = digits.replace(/(\d{4})(\d{1,4})?(\d{1,4})?/, (_, a, b, c) => c ? `${a} ${b} ${c}` : b ? `${a} ${b}` : a);
-                                  const newPlayers = [...otherPlayers];
-                                  if (!newPlayers[i]) newPlayers[i] = {};
-                                  newPlayers[i].aadhar = fmt;
-                                  setOtherPlayers(newPlayers);
-                                }} 
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               )}
 
@@ -585,18 +527,16 @@ const VolleyballBooking = () => {
 
               {/* Players */}
               <div className="preview-section">
-                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
-                   <h3 className="preview-section-title" style={{margin: 0}}><User size={16}/> Players Details ({playerCount} Players)</h3>
-                   <span style={{color: 'var(--primary-color)', cursor: 'pointer', fontSize: '0.8rem'}} onClick={() => setShowPlayersModal(true)}>View All</span>
-                 </div>
+                 <h3 className="preview-section-title"><User size={16}/> Players Details</h3>
                  <div className="preview-avatars">
-                    {/* Real avatars based on player count */}
-                    {allPlayersList.slice(0, 6).map((name, i) => (
-                       <div key={i} className="preview-avatar-item">
-                         <div className="preview-avatar">{getInitials(name)}</div>
-                         <div style={{fontSize: '0.75rem', marginTop: '0.4rem', color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '50px'}}>{getFirstName(name) || `Player ${i+1}`}</div>
-                       </div>
-                    ))}
+                    <div className="preview-avatar-item">
+                      <div className="preview-avatar" style={{background: 'var(--primary-color)', color: '#000'}}>{getInitials(playerDetails.fullName)}</div>
+                      <div style={{fontSize: '0.75rem', marginTop: '0.4rem', color: '#fff'}}>{getFirstName(playerDetails.fullName) || 'You'}</div>
+                    </div>
+                    <div className="preview-avatar-item">
+                       <div className="preview-avatar" style={{background: '#333'}}>{playerCount}</div>
+                       <div style={{fontSize: '0.75rem', marginTop: '0.4rem', color: '#888'}}>Total Players</div>
+                    </div>
                  </div>
               </div>
 
@@ -941,46 +881,7 @@ const VolleyballBooking = () => {
         </div>
       )}
 
-      {/* Players Modal */}
-      {showPlayersModal && (
-        <div className="payment-modal-overlay" onClick={(e) => { if(e.target === e.currentTarget) setShowPlayersModal(false) }}>
-          <div className="payment-modal animate-fade-in" style={{ maxWidth: '500px', width: '90%', maxHeight: '80vh', overflowY: 'auto' }}>
-            <h3 style={{ marginBottom: '1.5rem' }}>All Players Details</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ background: '#111', padding: '1rem', borderRadius: '8px', border: '1px solid #222' }}>
-                <div style={{ fontSize: '0.85rem', color: '#007BFF', marginBottom: '0.5rem', fontWeight: 600 }}>Player 1 (Main)</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                  <span style={{ fontSize: '0.85rem', color: '#888' }}>Name</span>
-                  <span style={{ fontSize: '0.85rem', color: '#fff' }}>{playerDetails.fullName || '-'}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                  <span style={{ fontSize: '0.85rem', color: '#888' }}>Phone</span>
-                  <span style={{ fontSize: '0.85rem', color: '#fff' }}>{playerDetails.phone || '-'}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '0.85rem', color: '#888' }}>Aadhar</span>
-                  <span style={{ fontSize: '0.85rem', color: '#fff' }}>{playerDetails.aadhar || '-'}</span>
-                </div>
-              </div>
-
-              {otherPlayers.slice(0, (playerCount === '10+' ? 9 : playerCount - 1)).map((p, i) => (
-                <div key={i} style={{ background: '#111', padding: '1rem', borderRadius: '8px', border: '1px solid #222' }}>
-                  <div style={{ fontSize: '0.85rem', color: '#007BFF', marginBottom: '0.5rem', fontWeight: 600 }}>Player {i + 2}</div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem' }}>
-                    <span style={{ fontSize: '0.85rem', color: '#888' }}>Name</span>
-                    <span style={{ fontSize: '0.85rem', color: '#fff' }}>{p?.name || '-'}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '0.85rem', color: '#888' }}>Aadhar</span>
-                    <span style={{ fontSize: '0.85rem', color: '#fff' }}>{p?.aadhar || '-'}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button className="next-btn" style={{ width: '100%', marginTop: '1.5rem' }} onClick={() => setShowPlayersModal(false)}>Close</button>
-          </div>
-        </div>
-      )}
+      {/* Players Modal Removed */}
 
     </div>
   );
