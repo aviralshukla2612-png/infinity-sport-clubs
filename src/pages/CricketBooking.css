@@ -847,7 +847,9 @@
     grid-template-columns: 1fr;
   }
   .preview-layout-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1.5rem;
   }
   .steps-indicator {
     flex-direction: row;
