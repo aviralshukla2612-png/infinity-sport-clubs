@@ -60,7 +60,7 @@ const Navbar = () => {
               <button className="book-now-btn" style={{width: '100%', marginTop: '1rem', backgroundColor: '#333'}}>SubAdmin</button>
             </Link>
             <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-              <button className="book-now-btn" style={{width: '100%', marginTop: '1rem'}}>Book Now</button>
+              <button className="book-now-btn" style={{width: '100%', marginTop: '1rem'}}>My Booking</button>
             </Link>
           </div>
         </div>
@@ -79,7 +79,7 @@ const Navbar = () => {
             <button className="book-now-btn" style={{backgroundColor: '#333', marginRight: '8px'}}>SubAdmin</button>
           </Link>
           <Link to="/dashboard">
-            <button className="book-now-btn">Book Now</button>
+            <button className="book-now-btn">My Booking</button>
           </Link>
         </div>
 
