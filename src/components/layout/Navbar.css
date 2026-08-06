@@ -30,6 +30,8 @@
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  max-width: none;
+  padding: 0 5%;
 }
 
 /* Logo */

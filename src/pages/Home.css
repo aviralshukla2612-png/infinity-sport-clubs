@@ -33,22 +33,26 @@
 .hero-bg-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(10, 10, 10, 0.60);
+  background: linear-gradient(to right, #090909 0%, #090909 45%, rgba(9,9,9,0.2) 100%), linear-gradient(to top, #090909 0%, rgba(9,9,9,0) 30%);
   z-index: 1;
 }
+
+
 
 .premium-hero-container {
   position: relative;
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
+  padding-left: 5%;
+  padding-right: 5%;
   height: 100%;
   z-index: 10;
-  transform-origin: top center;
+  transform-origin: top left;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 13vh;
+  padding-top: 20vh;
 }
 
 .hero-left-content {
@@ -247,33 +251,35 @@
 .floating-cards-centered {
   position: relative;
   width: 100%;
-  margin-top: 2vh;
+  margin-top: 40px;
+  margin-bottom: 40px;
   z-index: 20;
   display: flex;
-  justify-content: space-between;
-  gap: 32px;
+  justify-content: flex-start;
+  gap: 24px;
 }
 
 /* Centered Cards */
 .centered-card {
-  width: 420px;
-  height: 420px;
-  border-radius: 28px;
+  width: 100%;
+  max-width: 400px;
+  flex: 1;
+  height: 350px;
+  border-radius: 20px;
   overflow: hidden;
   position: relative;
   transition: all 0.4s ease;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .centered-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 50px rgba(255, 122, 0, 0.4);
-  border-color: rgba(255, 122, 0, 0.8);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(255, 122, 0, 0.3);
 }
 
-.cricket-card { box-shadow: 0 20px 60px rgba(255, 122, 0, 0.1); border: 1px solid rgba(255, 122, 0, 0.4); }
-.volleyball-card { box-shadow: 0 20px 60px rgba(45, 127, 255, 0.1); border: 1px solid rgba(45, 127, 255, 0.4); }
-.pickleball-card { box-shadow: 0 20px 60px rgba(138, 212, 0, 0.1); border: 1px solid rgba(138, 212, 0, 0.4); }
+.cricket-card { border: 1px solid rgba(255, 122, 0, 0.4); }
+.volleyball-card { border: 1px solid rgba(45, 127, 255, 0.4); }
+.pickleball-card { border: 1px solid rgba(138, 212, 0, 0.4); }
 
 .card-video-bg {
   position: absolute;
@@ -301,30 +307,70 @@
 
 .card-content-overlay {
   position: absolute;
-  bottom: 0; left: 0; width: 100%;
-  padding: 32px 24px;
+  top: 0; left: 0; width: 100%; height: 100%;
+  padding: 24px;
   z-index: 3;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 /* Typography Inside Cards */
 .card-heading {
-  font-size: 28px;
-  font-weight: 900;
+  font-size: 20px;
+  font-weight: 800;
   color: #ffffff;
-  margin-bottom: 0;
+  margin-top: auto;
+  margin-bottom: 8px;
   letter-spacing: 1px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   transition: transform 0.4s ease;
-  transform: translateY(20px);
+  transform: translateY(10px);
 }
 
 .centered-card:hover .card-heading {
   transform: translateY(0);
 }
+
+.card-features {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: #e0e0e0;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  transition: transform 0.4s ease;
+  transform: translateY(10px);
+}
+
+.centered-card:hover .card-features {
+  transform: translateY(0);
+}
+
+.card-features span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+  transform: translateY(10px);
+}
+.centered-card:hover .card-icon-wrapper {
+  transform: translateY(0);
+}
+.orange-icon { background: rgba(255,122,0,0.2); border: 1px solid rgba(255,122,0,0.5); }
+.blue-icon { background: rgba(45,127,255,0.2); border: 1px solid rgba(45,127,255,0.5); }
+.green-icon { background: rgba(138,212,0,0.2); border: 1px solid rgba(138,212,0,0.5); }
 
 /* Card Buttons */
 .card-action-btn {
@@ -332,11 +378,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 14px;
+  width: max-content;
+  padding: 8px 20px;
   border-radius: 100px;
   border: none;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   color: #fff;
   cursor: pointer;
@@ -344,7 +390,7 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
-  margin-top: 24px;
+  margin-top: 0;
 }
 
 .centered-card:hover .card-action-btn {
@@ -423,6 +469,11 @@
     align-items: center;
     margin-top: 60px;
     padding-bottom: 80px;
+  }
+  
+  .centered-card {
+    flex: none;
+    width: 90%;
   }
   
   .hero-wave {

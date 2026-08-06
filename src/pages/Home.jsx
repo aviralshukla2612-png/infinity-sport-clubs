@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, ArrowRight, MapPin, Shield, Map, Calendar, ChevronRight, ChevronDown } from 'lucide-react';
+import { Trophy, ArrowRight, MapPin, Shield, Map, Calendar, ChevronRight, ChevronDown, Users, CheckCircle2, PlayCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import heroVideo from '../assets/video/Luxury_sports_complex_cinematic_…_202608051834.mp4';
 import cricket3d from '../assets/images/cricket_3d.png';
@@ -120,22 +120,29 @@ const Home = () => {
               <div className="feature-item-inline fade-up-delay-1">
                 <div className="feature-icon-circle-custom"><Map size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
-                  <strong><Counter end={3} duration={1000} /> Acres</strong>
+                  <strong><Counter end={3} duration={1000} suffix="+" /> Acres</strong>
                   <span>Sports Campus</span>
                 </div>
               </div>
               <div className="feature-item-inline fade-up-delay-2">
                 <div className="feature-icon-circle-custom"><Trophy size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
-                  <strong>Professional</strong>
-                  <span>Facilities</span>
+                  <strong><Counter end={50} duration={1500} suffix="+" /></strong>
+                  <span>Tournaments Held</span>
                 </div>
               </div>
               <div className="feature-item-inline fade-up-delay-3">
+                <div className="feature-icon-circle-custom"><Users size={18} color="#fff" /></div>
+                <div className="feature-text-inline">
+                  <strong><Counter end={5000} duration={2000} suffix="+" /></strong>
+                  <span>Happy Members</span>
+                </div>
+              </div>
+              <div className="feature-item-inline fade-up-delay-4">
                 <div className="feature-icon-circle-custom"><Shield size={18} color="#fff" /></div>
                 <div className="feature-text-inline">
-                  <strong>Safe & Secure</strong>
-                  <span>Environment</span>
+                  <strong>24/7</strong>
+                  <span>Safe & Secure</span>
                 </div>
               </div>
             </div>
