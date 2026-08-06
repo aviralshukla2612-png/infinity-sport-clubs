@@ -34,23 +34,10 @@ const Counter = ({ end, duration, suffix = "" }) => {
 
 const CardBookingButton = ({ route, defaultText, colorClass }) => {
   const navigate = useNavigate();
-  const [isBooking, setIsBooking] = React.useState(false);
-
-  const handleClick = () => {
-    if (isBooking) return;
-    setIsBooking(true);
-    setTimeout(() => {
-      navigate(route);
-    }, 1000);
-  };
 
   return (
-    <button className={`card-action-btn ${colorClass}`} onClick={handleClick}>
-      {isBooking ? (
-        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-           Finding Available Slots...
-        </span>
-      ) : defaultText}
+    <button className={`card-action-btn ${colorClass}`} onClick={() => navigate(route)}>
+      {defaultText}
     </button>
   );
 };
