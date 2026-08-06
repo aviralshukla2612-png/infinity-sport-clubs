@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { MapPin, ChevronDown, Shield, Users, Menu, X } from 'lucide-react';
 import logo from '../../assets/images/logo.jpg';
@@ -8,6 +8,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavClick = (e, hash) => {
     setIsMobileMenuOpen(false);
@@ -25,7 +34,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="premium-navbar">
+    <nav className={`premium-navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
         
         {/* Left: Logo */}
