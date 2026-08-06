@@ -57,24 +57,15 @@ const Home = () => {
   return (
     <div className="home-page">
       <section className="premium-hero">
-        {backgroundVideos.map((vid, index) => (
-          <video
-            key={index}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="hero-video-bg"
-            style={{ 
-              opacity: index === activeBgIndex ? 1 : 0, 
-              transition: 'opacity 1.5s ease-in-out',
-              position: 'absolute',
-              top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover'
-            }}
-          >
-            <source src={vid} type="video/mp4" />
-          </video>
-        ))}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="hero-video-bg"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="hero-bg-overlay"></div>
 
         {/* Orange Wave at bottom - OUTSIDE container to span 100vw */}
@@ -149,24 +140,15 @@ const Home = () => {
           </div>
 
           <div className="mobile-hero-video-block">
-            {backgroundVideos.map((vid, index) => (
-              <video 
-                key={index}
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="mobile-hero-video"
-                style={{ 
-                  opacity: index === activeBgIndex ? 1 : 0, 
-                  transition: 'opacity 1.5s ease-in-out',
-                  position: 'absolute',
-                  top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover'
-                }}
-              >
-                <source src={vid} type="video/mp4" />
-              </video>
-            ))}
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="mobile-hero-video"
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
           </div>
 
           {/* Floating Cards Overlapping Wave */}
