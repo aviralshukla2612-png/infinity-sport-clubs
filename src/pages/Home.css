@@ -459,10 +459,10 @@
 
   .hero-features-row {
     display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 10px;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: center;
+    gap: 20px 24px;
     width: 100%;
-    max-width: 360px;
     margin: 0 auto;
     text-align: left;
   }
@@ -515,9 +515,19 @@
     font-size: 0.95rem;
   }
   
-  .primary-btn, .secondary-btn {
+  .hero-cta-group {
+    flex-direction: column;
     width: 100%;
-    margin-bottom: 0.5rem;
+    max-width: 320px;
+    margin: 16px auto 32px auto;
+    gap: 12px;
+  }
+
+  .cta-btn-primary, .cta-btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 14px;
   }
 
   .centered-card {
