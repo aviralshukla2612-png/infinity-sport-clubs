@@ -378,53 +378,77 @@ input[type=number] {
 }
 
 /* Global Loading Screen */
-.global-loading-screen {
+.global-loading-screen.premium-style {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #090909;
+  background-color: #000000;
   z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
 }
 
-.global-loading-screen.fade-out {
-  opacity: 0;
-  visibility: hidden;
+.global-loading-screen.premium-style.slide-up-fade {
+  transform: translateY(-100%);
+  opacity: 0.8;
 }
 
-.loading-logo {
-  height: 60px;
-  margin-bottom: 30px;
-  animation: pulse 2s infinite;
+.loader-logo-wrapper {
+  position: relative;
+  width: 90vw;
+  max-width: 600px;
+  height: auto;
+  display: inline-block;
+  box-shadow: 0 10px 40px rgba(255, 122, 0, 0.2);
+  border-radius: 12px;
 }
 
-.loading-progress-bar {
-  width: 200px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
+.loader-logo-empty, .loader-logo-filled {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
 }
 
-.loading-progress-fill {
-  height: 100%;
-  background: #FF7A00;
-  width: 0%;
-  animation: loadProgress 1.5s ease forwards;
+.loader-logo-empty {
+  opacity: 0.15;
+  filter: grayscale(100%);
 }
 
-@keyframes loadProgress {
-  0% { width: 0%; }
-  100% { width: 100%; }
+.loader-logo-filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* clip-path is injected inline by React */
+  transition: clip-path 0.1s linear;
 }
 
-@keyframes pulse {
-  0% { opacity: 0.7; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 0.7; transform: scale(0.95); }
+.loader-progress-text {
+  position: absolute;
+  bottom: 40px;
+  left: 50px;
+  font-size: 10vw;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+@keyframes pulse-scale {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .loader-progress-text {
+    font-size: 15vw;
+    bottom: 30px;
+    left: 30px;
+  }
 }
 
 /* Mouse Glow Effect */

@@ -13,25 +13,53 @@ import PickleballBooking from './pages/PickleballBooking';
 import MyBookings from './pages/MyBookings';
 import { GlobalBookingProvider } from './context/GlobalBookingContext';
 import logo from './assets/images/logo.jpg';
+import lodderImg from './assets/images/lodder.png';
 
 const LoadingScreen = () => {
   const [loading, setLoading] = React.useState(true);
-  
+  const [progress, setProgress] = React.useState(0);
+  const [isFading, setIsFading] = React.useState(false);
+
   React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
+    let start = 0;
+    const duration = 8000; // Increased duration to 8 seconds
+    const increment = 100 / (duration / 16);
+    
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= 100) {
+        setProgress(100);
+        clearInterval(timer);
+        setTimeout(() => setIsFading(true), 200);
+        setTimeout(() => setLoading(false), 1000);
+      } else {
+        setProgress(Math.floor(start));
+      }
+    }, 16);
+    
+    return () => clearInterval(timer);
   }, []);
 
   if (!loading) return null;
 
   return (
-    <div className={`global-loading-screen ${!loading ? 'fade-out' : ''}`}>
-      <img src={logo} alt="Logo" className="loading-logo" />
-      <div className="loading-progress-bar">
-        <div className="loading-progress-fill"></div>
+    <div className={`global-loading-screen premium-style ${isFading ? 'slide-up-fade' : ''}`}>
+      <div className="loader-center-content">
+        <div className="loader-logo-wrapper">
+          <img src={lodderImg} alt="Loading..." className="loader-logo-empty" />
+          <img 
+            src={lodderImg} 
+            alt="Loading..." 
+            className="loader-logo-filled" 
+            style={{ clipPath: `inset(${100 - progress}% 0 0 0)` }} 
+          />
+        </div>
+      </div>
+      <div className="loader-progress-text">
+        {progress}
       </div>
     </div>
-  )
+  );
 }
 
 const AppLayout = () => {
