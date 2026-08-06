@@ -13,7 +13,7 @@ import PickleballBooking from './pages/PickleballBooking';
 import MyBookings from './pages/MyBookings';
 import { GlobalBookingProvider } from './context/GlobalBookingContext';
 import logo from './assets/images/logo.jpg';
-import lodderImg from './assets/images/lodder.png';
+import loaderVideo from './assets/video/loadervideo.webm';
 
 const LoadingScreen = () => {
   const [loading, setLoading] = React.useState(true);
@@ -23,35 +23,71 @@ const LoadingScreen = () => {
   React.useEffect(() => {
     let start = 0;
     const duration = 8000; // Increased duration to 8 seconds
-    const increment = 100 / (duration / 16);
+    const increment = 100 / (duration / 48);
     
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= 100) {
-        setProgress(100);
-        clearInterval(timer);
-        setTimeout(() => setIsFading(true), 200);
-        setTimeout(() => setLoading(false), 1000);
-      } else {
-        setProgress(Math.floor(start));
-      }
-    }, 16);
+    let timer;
+    const initialDelay = setTimeout(() => {
+      timer = setInterval(() => {
+        start += increment;
+        if (start >= 100) {
+          setProgress(100);
+          clearInterval(timer);
+          setTimeout(() => setIsFading(true), 200);
+          setTimeout(() => setLoading(false), 1000);
+        } else {
+          setProgress(Math.floor(start));
+        }
+      }, 48);
+    }, 2000); // 2 second delay so particles can float up first
     
-    return () => clearInterval(timer);
+    return () => {
+      clearTimeout(initialDelay);
+      if (timer) clearInterval(timer);
+    };
+  }, []);
+
+  const particles = React.useMemo(() => {
+    return Array.from({ length: 60 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      size: `${Math.random() * 4 + 2}px`,
+      duration: `${Math.random() * 3 + 4}s`,
+      delay: `${Math.random() * 4}s`
+    }));
   }, []);
 
   if (!loading) return null;
 
   return (
     <div className={`global-loading-screen premium-style ${isFading ? 'slide-up-fade' : ''}`}>
+      <div className="loader-particles-container">
+        {particles.map(p => (
+          <div 
+            key={p.id} 
+            className="loader-particle" 
+            style={{ 
+              left: p.left, 
+              width: p.size, 
+              height: p.size, 
+              animationDuration: p.duration, 
+              animationDelay: p.delay 
+            }} 
+          />
+        ))}
+      </div>
       <div className="loader-center-content">
         <div className="loader-logo-wrapper">
-          <img src={lodderImg} alt="Loading..." className="loader-logo-empty" />
-          <img 
-            src={lodderImg} 
-            alt="Loading..." 
-            className="loader-logo-filled" 
-            style={{ clipPath: `inset(${100 - progress}% 0 0 0)` }} 
+          <video 
+            src={loaderVideo} 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className="loader-logo-video"
+          />
+          <div 
+            className="loader-video-reveal-mask"
+            style={{ height: `${100 - progress}%` }}
           />
         </div>
       </div>
