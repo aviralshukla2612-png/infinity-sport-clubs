@@ -443,10 +443,14 @@
     overflow: hidden; /* Keep hidden for the wave but let content flow */
   }
 
+  .premium-hero-container {
+    padding-top: 120px;
+  }
+
   .hero-left-content {
     position: relative;
     top: 0;
-    margin-top: 12vh;
+    margin-top: 0;
     padding: 0 20px;
     align-items: center;
     text-align: center;
