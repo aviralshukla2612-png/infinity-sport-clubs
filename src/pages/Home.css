@@ -458,8 +458,13 @@
   }
 
   .hero-features-row {
-    justify-content: center !important;
-    flex-wrap: wrap;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 10px;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    text-align: left;
   }
 
   .floating-cards-centered {
