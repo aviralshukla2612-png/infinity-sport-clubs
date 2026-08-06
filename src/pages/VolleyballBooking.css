@@ -867,6 +867,33 @@
   }
 }
 
+@media (max-width: 600px) {
+  .preview-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .preview-amenities {
+    gap: 1rem;
+    flex-direction: column;
+  }
+  .facilities-bar {
+    gap: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .time-slots-grid {
+    grid-template-columns: 1fr;
+  }
+  .players-selector {
+    flex-wrap: wrap;
+  }
+  .hero-title {
+    font-size: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
 /* Summary Final */
 .btn-confirm-final {
   background: #4caf50;

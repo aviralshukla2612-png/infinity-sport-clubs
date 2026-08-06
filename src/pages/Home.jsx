@@ -1,22 +1,29 @@
 import React from 'react';
 import { Trophy, ArrowRight, MapPin, Shield, Map } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import heroback from '../assets/images/heroback.png';
+import heroVideo from '../assets/video/Luxury_sports_complex_cinematic_…_202608051834.mp4';
 import cricket3d from '../assets/images/cricket_3d.png';
 import volleyball3d from '../assets/images/volleyball_3d.png';
 import pickleball3d from '../assets/images/pickleball_3d.png';
-import LottieReact from 'lottie-react';
-const Lottie = LottieReact.default || LottieReact;
-import rohitAnimation from '../assets/lottie/rohit-sharma.json';
-import volleyballAnimation from '../assets/lottie/Volley_Ball_Player_Character2.json';
-import pickleballAnimation from '../assets/lottie/pickleball.json';
+import cricketVideo from '../assets/video/Box_cricket_stadium_at_sunset_202608061020.mp4';
+import volleyballVideo from '../assets/video/Volleyball_court_in_sports_complex_202608051850.mp4';
+import pickleballVideo from '../assets/video/Pickleball_court_during_golden_hour_202608051820.mp4';
 import './Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
   return (
     <div className="home-page">
-      <section className="premium-hero" style={{ backgroundImage: `url(${heroback})` }}>
+      <section className="premium-hero">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="hero-video-bg"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="hero-bg-overlay"></div>
 
         {/* Orange Wave at bottom - OUTSIDE container to span 100vw */}
@@ -66,55 +73,61 @@ const Home = () => {
             </div>
           </div>
 
+          <div className="mobile-hero-video-block">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="mobile-hero-video"
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+          </div>
+
           {/* Floating Cards Overlapping Wave */}
           <div className="floating-cards-centered">
             
             {/* Card 1: Cricket */}
             <div className="centered-card cricket-card">
-              <div className="card-lottie-wrapper cricket-bg">
-                <Lottie animationData={rohitAnimation} loop={true} style={{ width: '100%', height: '100%', transform: 'scale(1.8)' }} />
+              <video autoPlay loop muted playsInline className="card-video-bg">
+                <source src={cricketVideo} type="video/mp4" />
+              </video>
+              <div className="card-overlay-gradient"></div>
+              <div className="card-content-overlay">
+                <h2 className="card-heading">CRICKET</h2>
+                <button className="card-action-btn orange-btn" onClick={() => navigate('/cricket-booking')}>
+                  Book Court &rarr;
+                </button>
               </div>
-              <h2 className="card-heading">CRICKET</h2>
-              <h3 className="card-subheading orange-text">TOURNAMENT VENUE</h3>
-              <p className="card-body">
-                7 professional grounds for leagues,<br/>
-                tournaments and corporate matches.
-              </p>
-              <button className="card-action-btn orange-btn" onClick={() => navigate('/cricket-booking')}>
-                Book Cricket Ground &rarr;
-              </button>
             </div>
 
             {/* Card 2: Volleyball */}
             <div className="centered-card volleyball-card">
-              <div className="card-lottie-wrapper volleyball-bg">
-                <Lottie animationData={volleyballAnimation} loop={true} style={{ width: '100%', height: '100%', transform: 'scale(1.8)' }} />
+              <video autoPlay loop muted playsInline className="card-video-bg">
+                <source src={volleyballVideo} type="video/mp4" />
+              </video>
+              <div className="card-overlay-gradient"></div>
+              <div className="card-content-overlay">
+                <h2 className="card-heading">VOLLEYBALL</h2>
+                <button className="card-action-btn blue-btn" onClick={() => navigate('/volleyball-booking')}>
+                  Book Court &rarr;
+                </button>
               </div>
-              <h2 className="card-heading">VOLLEYBALL</h2>
-              <h3 className="card-subheading blue-text">TOURNAMENT VENUE</h3>
-              <p className="card-body">
-                Professional volleyball court<br/>
-                for matches, training & events.
-              </p>
-              <button className="card-action-btn blue-btn" onClick={() => navigate('/volleyball-booking')}>
-                Book Volleyball Court &rarr;
-              </button>
             </div>
 
             {/* Card 3: Pickleball */}
             <div className="centered-card pickleball-card">
-              <div className="card-lottie-wrapper pickleball-bg">
-                <Lottie animationData={pickleballAnimation} loop={true} style={{ width: '100%', height: '100%', transform: 'scale(1.8)' }} />
+              <video autoPlay loop muted playsInline className="card-video-bg">
+                <source src={pickleballVideo} type="video/mp4" />
+              </video>
+              <div className="card-overlay-gradient"></div>
+              <div className="card-content-overlay">
+                <h2 className="card-heading">PICKLEBALL</h2>
+                <button className="card-action-btn green-btn" onClick={() => navigate('/pickleball-booking')}>
+                  Book Court &rarr;
+                </button>
               </div>
-              <h2 className="card-heading">PICKLEBALL</h2>
-              <h3 className="card-subheading green-text">TOURNAMENT VENUE</h3>
-              <p className="card-body">
-                Dedicated pickleball courts<br/>
-                for all ages and skill levels.
-              </p>
-              <button className="card-action-btn green-btn" onClick={() => navigate('/pickleball-booking')}>
-                Book Pickleball Court &rarr;
-              </button>
             </div>
 
           </div>
