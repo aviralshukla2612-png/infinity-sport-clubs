@@ -1353,25 +1353,31 @@ input[type="time"].admin-form-input::-webkit-calendar-picker-indicator {
   .admin-table td,
   .admin-slot-table td {
     border: none;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 120px;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
     border-bottom: 1px solid rgba(255,255,255,0.03);
+    min-height: 2.8rem;
+    text-align: right;
   }
   .admin-table td:last-child,
   .admin-slot-table td:last-child {
     border-bottom: none;
-    justify-content: flex-end;
+    align-items: flex-end;
   }
   .admin-table td[data-label]::before,
   .admin-slot-table td[data-label]::before {
     content: attr(data-label);
+    position: absolute;
+    left: 0.5rem;
+    top: 0.8rem;
     font-size: 0.68rem;
     font-weight: 700;
     color: var(--admin-muted);
     text-transform: uppercase;
-    margin-right: auto;
   }
 }
 

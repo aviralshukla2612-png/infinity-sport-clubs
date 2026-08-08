@@ -130,6 +130,12 @@ const VolleyballBooking = () => {
     return name.trim().split(' ')[0];
   };
 
+  const getFormattedTime = () => {
+    if (selectedTimeSlots.length === 0) return '-';
+    const sortedSlots = [...selectedTimeSlots].sort((a, b) => timeSlots.findIndex(ts => ts.time === a) - timeSlots.findIndex(ts => ts.time === b));
+    return `${sortedSlots[0].split(' - ')[0]} - ${sortedSlots[sortedSlots.length - 1].split(' - ')[1]}`;
+  };
+
   return (
     <div className="volleyball-booking-container">
       {/* Parallax Hero Section */}
@@ -432,7 +438,7 @@ const VolleyballBooking = () => {
                 <span className="label">Time</span>
                 <span className="value">
                   {selectedTimeSlots.length > 0 
-                    ? `${selectedTimeSlots[0].split(' - ')[0]} - ${selectedTimeSlots[0].split(' - ')[1]}${selectedTimeSlots.length > 1 ? ` (+${selectedTimeSlots.length - 1})` : ''}`
+                    ? getFormattedTime()
                     : '-'}
                 </span>
               </div>
@@ -499,11 +505,7 @@ const VolleyballBooking = () => {
                      <Clock size={18} className="preview-icon"/>
                      <div>
                        <div className="label">Time</div>
-                       <div className="val">
-                         {selectedTimeSlots.length > 0 
-                           ? `${selectedTimeSlots[0].split(' - ')[0]} - ${selectedTimeSlots[0].split(' - ')[1]}${selectedTimeSlots.length > 1 ? ` (+${selectedTimeSlots.length - 1})` : ''}`
-                           : '-'}
-                       </div>
+                       <div className="val">{selectedTimeSlots.length > 0 ? getFormattedTime() : '-'}</div>
                        <div className="sub">{selectedTimeSlots.length} Hour{selectedTimeSlots.length !== 1 && 's'}</div>
                      </div>
                    </div>
@@ -875,8 +877,8 @@ const VolleyballBooking = () => {
                   court: selectedGround.name,
                   date: format(new Date(calYear, calMonth, selectedDate), 'dd MMM yyyy'),
                   day: format(new Date(calYear, calMonth, selectedDate), 'EEEE'),
-                  time: selectedTimeSlots.join(', '),
-                  timeSlot: selectedTimeSlots.join(', '),
+                  time: getFormattedTime(),
+                  timeSlot: getFormattedTime(),
                   duration: `${selectedTimeSlots.length} Hour${selectedTimeSlots.length !== 1 ? 's' : ''}`,
                   players: `${playerCount} Players`,
                   price: (selectedGround.price * selectedTimeSlots.length) + 200,

@@ -615,23 +615,29 @@ table.sa-table {
   }
   .sa-table td {
     border: none;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 100px;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
     border-bottom: 1px solid rgba(255,255,255,0.03);
+    min-height: 2.8rem;
+    text-align: right;
   }
   .sa-table td:last-child {
     border-bottom: none;
-    justify-content: flex-end;
+    align-items: flex-end;
   }
   .sa-table td[data-label]::before {
     content: attr(data-label);
+    position: absolute;
+    left: 0.5rem;
+    top: 0.8rem;
     font-size: 0.68rem;
     font-weight: 700;
     color: #888;
     text-transform: uppercase;
-    margin-right: auto;
   }
 }
 
