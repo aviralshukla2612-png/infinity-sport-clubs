@@ -370,6 +370,11 @@ table.sa-table {
 }
 
 .sa-table tr:last-child td { border-bottom: none; }
+.sa-table th:last-child,
+.sa-table td:last-child { 
+  padding-right: 1.5rem; 
+  min-width: 120px;
+}
 
 .sa-table tr:hover td { background: rgba(255,255,255,0.02); }
 

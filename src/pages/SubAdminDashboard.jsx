@@ -486,29 +486,27 @@ export default function SubAdminDashboard() {
             <table className="sa-table">
               <thead>
                 <tr>
-                  <th>Booking ID</th><th>Sport</th><th>Ground / Court</th><th>Date</th>
-                  <th>Time Slot</th><th>Customer</th><th>Amount</th><th>Status</th>
-                  <th>Booking Date</th><th>Action</th>
+                  <th>Booking ID</th><th>Venue</th><th>Date & Time</th>
+                  <th>Customer</th><th>Amount</th><th>Status</th><th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {pageRows.length === 0 ? (
-                  <tr><td colSpan={10} style={{textAlign:'center',padding:'2.5rem',color:'#444'}}>No bookings found.</td></tr>
+                  <tr><td colSpan={7} style={{textAlign:'center',padding:'2.5rem',color:'#444'}}>No bookings found.</td></tr>
                 ) : pageRows.map(b => (
                   <tr key={b.id}>
                     <td data-label="Booking ID"><span className="sa-booking-id">{b.id}</span></td>
-                    <td data-label="Sport">
-                      <div className="sa-sport-cell">
+                    <td data-label="Venue">
+                      <div className="sa-sport-cell" style={{marginBottom:'0.2rem'}}>
                         <div className={`sa-sport-dot ${b.sport}`}>{SPORT_ICONS[b.sport]}</div>
-                        <span>{b.sportLabel}</span>
+                        <span style={{fontWeight:500, color:'#ddd'}}>{b.sportLabel}</span>
                       </div>
+                      <div style={{fontSize:'0.75rem',color:'#888', paddingLeft:'1.8rem'}}>{b.ground} • {b.court}</div>
                     </td>
-                    <td data-label="Ground / Court">
-                      <div>{b.ground}</div>
-                      <div style={{fontSize:'0.7rem',color:'#555'}}>{b.court}</div>
+                    <td data-label="Date & Time">
+                      <div style={{color:'#ddd', fontWeight:500, marginBottom:'0.2rem'}}>{b.date}</div>
+                      <div style={{fontSize:'0.75rem',color:'#888', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', maxWidth:'180px'}} title={b.timeSlot}>{b.timeSlot}</div>
                     </td>
-                    <td data-label="Date">{b.date}</td>
-                    <td data-label="Time Slot" style={{whiteSpace:'nowrap'}}>{b.timeSlot}</td>
                     <td data-label="Customer">
                       <div className="sa-customer-name">{b.customer}</div>
                       <div className="sa-customer-phone">{b.phone}</div>
@@ -519,22 +517,23 @@ export default function SubAdminDashboard() {
                         {b.status.charAt(0).toUpperCase()+b.status.slice(1)}
                       </span>
                     </td>
-                    <td data-label="Booking Date" style={{fontSize:'0.72rem',color:'#666',whiteSpace:'nowrap'}}>{b.bookedAt}</td>
                     <td data-label="Action">
-                      <button className="sa-action-btn view" onClick={() => setViewBooking(b)}>
-                        <Eye size={12}/> View
-                      </button>
-                      <button className="sa-action-btn edit" onClick={() => showAlert('Edit', 'Edit triggered for ' + b.id, 'info')}>
-                        <Pencil size={12}/> Edit
-                      </button>
-                      <button className="sa-action-btn danger" onClick={() => {
-                        showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => {
-                          deleteBooking(booking.id);
-                          showAlert('Deleted', 'Booking deleted', 'success');
-                        });
-                      }}>
-                        <Trash2 size={12}/> Delete
-                      </button>
+                      <div style={{display:'flex',gap:'0.4rem'}}>
+                        <button className="sa-action-btn view" title="View" onClick={() => setViewBooking(b)}>
+                          <Eye size={14}/>
+                        </button>
+                        <button className="sa-action-btn edit" title="Edit" onClick={() => showAlert('Edit', 'Edit triggered for ' + b.id, 'info')}>
+                          <Pencil size={14}/>
+                        </button>
+                        <button className="sa-action-btn danger" title="Delete" onClick={() => {
+                          showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => {
+                            deleteBooking(b.id);
+                            showAlert('Deleted', 'Booking deleted', 'success');
+                          });
+                        }}>
+                          <Trash2 size={14}/>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

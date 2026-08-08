@@ -46,7 +46,7 @@ const CricketBooking = () => {
   const [calMonth, setCalMonth] = useState(today.getMonth()); // 0-indexed
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
   const [playerCount, setPlayerCount] = useState(8);
 
   // Payment Modal States
@@ -75,7 +75,6 @@ const CricketBooking = () => {
     fullName: '',
     phone: '',
     email: '',
-    aadhar: '',
     requests: ''
   });
   
@@ -109,10 +108,10 @@ const CricketBooking = () => {
   const isNextDisabled = () => {
     if (step === 1 && !selectedGroundId) return true;
     if (step === 2 && !selectedDate) return true;
-    if (step === 3 && !selectedTimeSlot) return true;
+    if (step === 3 && selectedTimeSlots.length === 0) return true;
     if (step === 4) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !emailRegex.test(playerDetails.email) || !playerDetails.aadhar.trim()) {
+      if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !emailRegex.test(playerDetails.email)) {
         return true;
       }
     }
@@ -321,23 +320,26 @@ const CricketBooking = () => {
                     <p>{selectedGround?.type}</p>
                   </div>
                   <div className="time-slots-grid">
-                    {timeSlots.map((slot, idx) => (
-                      <div 
-                        key={idx} 
-                        className={`time-slot ${slot.status === 'booked' ? 'booked' : (selectedTimeSlot === slot.time ? 'selected' : 'available')}`}
-                        onClick={() => {
-                          if (slot.status !== 'booked') {
-                            setSelectedTimeSlot(slot.time);
-                            setTimeout(() => {
-                              setStep(4);
-                              document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }, 300);
-                          }
-                        }}
-                      >
-                        {slot.time}
-                      </div>
-                    ))}
+                    {timeSlots.map((slot, idx) => {
+                      const isSelected = selectedTimeSlots.includes(slot.time);
+                      return (
+                        <div 
+                          key={idx} 
+                          className={`time-slot ${slot.status === 'booked' ? 'booked' : (isSelected ? 'selected' : 'available')}`}
+                          onClick={() => {
+                            if (slot.status !== 'booked') {
+                              setSelectedTimeSlots(prev => 
+                                prev.includes(slot.time) 
+                                  ? prev.filter(t => t !== slot.time) 
+                                  : [...prev, slot.time]
+                              );
+                            }
+                          }}
+                        >
+                          {slot.time}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -392,23 +394,6 @@ const CricketBooking = () => {
                       )}
                     </div>
                     <div className="form-group">
-                      <label>Aadhar Card Number</label>
-                      <input
-                        type="text"
-                        className="dark-input"
-                        placeholder="XXXX XXXX XXXX"
-                        value={playerDetails.aadhar}
-                        maxLength={14}
-                        inputMode="numeric"
-                        style={{color:'#fff'}}
-                        onChange={(e) => {
-                          const digits = e.target.value.replace(/\D/g, '').slice(0, 12);
-                          const fmt = digits.replace(/(\d{4})(\d{1,4})?(\d{1,4})?/, (_, a, b, c) => c ? `${a} ${b} ${c}` : b ? `${a} ${b}` : a);
-                          setPlayerDetails({...playerDetails, aadhar: fmt});
-                        }}
-                      />
-                    </div>
-                    <div className="form-group">
                       <label>Special Requests (Optional)</label>
                       <textarea className="dark-input" rows="3" placeholder="Any special requests..." maxLength={200} value={playerDetails.requests} onChange={(e) => setPlayerDetails({...playerDetails, requests: e.target.value})}></textarea>
                     </div>
@@ -439,7 +424,11 @@ const CricketBooking = () => {
               
               <div className="summary-row">
                 <span className="label">Time</span>
-                <span className="value">{selectedTimeSlot || '-'}</span>
+                <span className="value">
+                  {selectedTimeSlots.length > 0 
+                    ? `${selectedTimeSlots[0]}${selectedTimeSlots.length > 1 ? ` (+${selectedTimeSlots.length - 1})` : ''}` 
+                    : '-'}
+                </span>
               </div>
               
               <div className="summary-row">
@@ -456,7 +445,7 @@ const CricketBooking = () => {
               
               <div className="summary-total">
                 <span>Total</span>
-                <span className="price">₹{selectedGround?.price || 0}</span>
+                <span className="price">₹{(selectedGround?.price || 0) * (selectedTimeSlots.length || 1)}</span>
               </div>
               
               <button 
@@ -504,8 +493,8 @@ const CricketBooking = () => {
                      <Clock size={18} className="preview-icon"/>
                      <div>
                        <div className="label">Time</div>
-                       <div className="val">{selectedTimeSlot}</div>
-                       <div className="sub">1 Hour</div>
+                       <div className="val">{selectedTimeSlots.length > 0 ? `${selectedTimeSlots[0]}${selectedTimeSlots.length > 1 ? ` (+${selectedTimeSlots.length - 1})` : ''}` : '-'}</div>
+                       <div className="sub">{selectedTimeSlots.length} Hour{selectedTimeSlots.length > 1 ? 's' : ''}</div>
                      </div>
                    </div>
                    <div className="preview-detail-card">
@@ -520,7 +509,7 @@ const CricketBooking = () => {
                      <FileText size={18} className="preview-icon"/>
                      <div>
                        <div className="label">Price</div>
-                       <div className="val">₹{selectedGround.price}</div>
+                       <div className="val">₹{selectedGround.price * selectedTimeSlots.length}</div>
                        <div className="sub">Total</div>
                      </div>
                    </div>
@@ -564,8 +553,8 @@ const CricketBooking = () => {
               <h3 style={{fontSize: '1.2rem', fontWeight: 600, marginBottom: '1.5rem'}}>Booking Summary</h3>
               
               <div className="preview-summary-row">
-                <span>Ground Price (1 Hour)</span>
-                <span>₹{selectedGround.price}</span>
+                <span>Ground Price ({selectedTimeSlots.length} Hour{selectedTimeSlots.length > 1 ? 's' : ''})</span>
+                <span>₹{selectedGround.price * selectedTimeSlots.length}</span>
               </div>
               <div className="preview-summary-row" style={{fontSize: '0.8rem', color: '#888'}}>
                 <span>Service Fee ⓘ</span>
@@ -581,7 +570,7 @@ const CricketBooking = () => {
                    <div>Total Amount</div>
                    <div style={{fontSize: '0.75rem', color: '#888', fontWeight: 'normal'}}>Exclusive of all taxes</div>
                  </div>
-                 <div style={{color: 'var(--primary-color)', fontSize: '1.5rem', fontWeight: 'bold'}}>₹{selectedGround.price + 200}</div>
+                 <div style={{color: 'var(--primary-color)', fontSize: '1.5rem', fontWeight: 'bold'}}>₹{(selectedGround.price * selectedTimeSlots.length) + 200}</div>
               </div>
 
               <div style={{marginTop: '1.5rem'}}>
@@ -671,6 +660,22 @@ const CricketBooking = () => {
                  onClick={() => navigate('/dashboard')}
                >
                  📋 My Bookings
+               </button>
+               <button
+                 style={{
+                   padding:'0.85rem 2.5rem',
+                   background:'linear-gradient(135deg, #9C27B0, #E040FB)',
+                   border:'none', borderRadius:'12px',
+                   color:'#fff', fontSize:'0.95rem', fontWeight:700,
+                   cursor:'pointer', display:'flex', alignItems:'center', gap:'0.6rem',
+                   boxShadow:'0 4px 20px rgba(156,39,176,0.35)',
+                   transition:'all 0.2s'
+                 }}
+                 onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
+                 onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
+                 onClick={() => navigate('/write-review')}
+               >
+                 ⭐ Write a Review
                </button>
              </div>
           </div>
@@ -831,7 +836,7 @@ const CricketBooking = () => {
 
              <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
-              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => setShowConfirmBookingModal(true)}>Pay ₹{selectedGround.price + 200}</button>
+              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => setShowConfirmBookingModal(true)}>Pay ₹{(selectedGround.price * selectedTimeSlots.length) + 200}</button>
             </div>
           </div>
         </div>
@@ -859,12 +864,12 @@ const CricketBooking = () => {
                   court: selectedGround.name,
                   date: format(new Date(calYear, calMonth, selectedDate), 'dd MMM yyyy'),
                   day: format(new Date(calYear, calMonth, selectedDate), 'EEEE'),
-                  time: selectedTimeSlot,
-                  timeSlot: selectedTimeSlot,
-                  duration: '1 Hour',
+                  time: selectedTimeSlots.join(', '),
+                  timeSlot: selectedTimeSlots.join(', '),
+                  duration: `${selectedTimeSlots.length} Hour${selectedTimeSlots.length > 1 ? 's' : ''}`,
                   players: `${playerCount} Players`,
-                  price: selectedGround.price + 200,
-                  amount: selectedGround.price + 200,
+                  price: (selectedGround.price * selectedTimeSlots.length) + 200,
+                  amount: (selectedGround.price * selectedTimeSlots.length) + 200,
                   status: 'confirmed',
                   paymentStatus: 'paid',
                   customer: playerDetails.fullName,

@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalBooking } from '../context/GlobalBookingContext';
 import {
@@ -94,8 +96,8 @@ const DonutChart = ({ segments, total }) => {
           />
         );
       })}
-      <text x={cx} y={cy - 4} textAnchor="middle" fill="#fff" fontSize="14" fontWeight="800" fontFamily="Inter">{total}</text>
-      <text x={cx} y={cy + 10} textAnchor="middle" fill="#666" fontSize="7" fontFamily="Inter">TOTAL</text>
+      <text x={cx} cy={cy - 4} textAnchor="middle" fill="#fff" fontSize="14" fontWeight="800" fontFamily="Inter">{total}</text>
+      <text x={cx} cy={cy + 10} textAnchor="middle" fill="#666" fontSize="7" fontFamily="Inter">TOTAL</text>
     </svg>
   );
 };
@@ -138,7 +140,8 @@ export default function AdminDashboard() {
   const [bookStatus, setBookStatus] = useState('');
   const [bookSport, setBookSport] = useState('');
   const [custSearch, setCustSearch] = useState('');
-  const [modal, setModal] = useState(null); // { type, data }
+  const [modal, setModal] = useState({type:null, data:null});
+  const [selectedDate, setSelectedDate] = useState(null); // { type, data }
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false });
   const [alertDialog, setAlertDialog] = useState({ isOpen: false });
@@ -556,30 +559,34 @@ export default function AdminDashboard() {
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>Booking ID</th><th>Sport</th><th>Ground</th><th>Date</th>
-                  <th>Time Slot</th><th>Customer</th><th>Amount</th><th>Status</th><th>Action</th>
+                  <th>Booking ID</th><th>Venue</th><th>Date & Time</th>
+                  <th>Customer</th><th>Amount</th><th>Status</th><th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {pageBookings.length === 0 ? (
-                  <tr><td colSpan={9} style={{textAlign:'center',padding:'2.5rem',color:'#333'}}>No bookings found</td></tr>
+                  <tr><td colSpan={7} style={{textAlign:'center',padding:'2.5rem',color:'#333'}}>No bookings found</td></tr>
                 ) : pageBookings.map(b => (
                   <tr key={b.id}>
                     <td data-label="Booking ID" style={{fontFamily:'monospace',color:'#555',fontSize:'0.72rem'}}>{b.id}</td>
-                    <td data-label="Sport"><div style={{display:'flex',alignItems:'center',gap:'0.4rem'}}>{SPORT_ICONS[b.sport]} {b.sportLabel}</div></td>
-                    <td data-label="Ground"><div>{b.ground}</div><div style={{fontSize:'0.68rem',color:'#444'}}>{b.court}</div></td>
-                    <td data-label="Date">{b.date}</td>
-                    <td data-label="Time Slot" style={{whiteSpace:'nowrap',fontSize:'0.75rem'}}>{b.timeSlot}</td>
+                    <td data-label="Venue">
+                      <div style={{display:'flex',alignItems:'center',gap:'0.4rem',marginBottom:'0.1rem'}}>{SPORT_ICONS[b.sport]} <span style={{fontWeight:500}}>{b.sportLabel}</span></div>
+                      <div style={{fontSize:'0.68rem',color:'#666',paddingLeft:'1.4rem'}}>{b.ground} • {b.court}</div>
+                    </td>
+                    <td data-label="Date & Time">
+                      <div style={{fontWeight:500,marginBottom:'0.1rem'}}>{b.date}</div>
+                      <div style={{fontSize:'0.72rem',color:'#555',whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', maxWidth:'180px'}} title={b.timeSlot}>{b.timeSlot}</div>
+                    </td>
                     <td data-label="Customer"><div style={{fontWeight:500}}>{b.customer}</div><div style={{fontSize:'0.68rem',color:'#555'}}>{b.phone}</div></td>
                     <td data-label="Amount" style={{fontWeight:600}}>₹{b.amount.toLocaleString()}</td>
                     <td data-label="Status"><span className={`admin-badge ${STATUS_COLORS[b.status]}`}>{b.status}</span></td>
                     <td data-label="Action">
-                      <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={12}/> View</button>
-                        <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={12}/> Edit</button>
+                      <div style={{display:'flex',gap:'0.4rem'}}>
+                        <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'booking',data:b})}><Eye size={14}/></button>
+                        <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editBooking',data:b})}><Pencil size={14}/></button>
                         <button className="admin-icon-btn danger" title="Delete" onClick={() => {
                           showConfirm('Delete Booking', 'Are you sure you want to delete this booking?', 'danger', () => deleteBooking(b.id));
-                        }}><Trash2 size={12}/> Delete</button>
+                        }}><Trash2 size={14}/></button>
                       </div>
                     </td>
                   </tr>
@@ -650,15 +657,15 @@ export default function AdminDashboard() {
                     <td data-label="Joined" style={{color:'#666',fontSize:'0.75rem'}}>{c.joined}</td>
                     <td data-label="Status"><span className={`admin-badge ${c.status}`}>{c.status}</span></td>
                     <td data-label="Action">
-                      <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn view" onClick={()=>setModal({type:'customer',data:c})}><Eye size={12}/> View</button>
-                        <button className="admin-icon-btn edit" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={12}/> Edit</button>
+                      <div style={{display:'flex',gap:'0.4rem'}}>
+                        <button className="admin-icon-btn view" title="View" onClick={()=>setModal({type:'customer',data:c})}><Eye size={14}/></button>
+                        <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editCustomer',data:c})}><Pencil size={14}/></button>
                         <button className="admin-icon-btn danger" title="Delete" onClick={() => {
                           showConfirm('Delete Customer', 'Are you sure you want to delete this customer?', 'danger', () => {
                             setCustomers(prev => prev.filter(cust => cust.id !== c.id));
                             showAlert('Deleted', 'Customer has been deleted.', 'success');
                           });
-                        }}><Trash2 size={12}/> Delete</button>
+                        }}><Trash2 size={14}/></button>
                       </div>
                     </td>
                   </tr>
@@ -868,12 +875,12 @@ export default function AdminDashboard() {
                     <td data-label="Status"><span className={`admin-badge ${a.status}`}>{a.status}</span></td>
                     <td data-label="Last Login" style={{color:'#666',fontSize:'0.75rem'}}>{a.lastLogin}</td>
                     <td data-label="Action">
-                      <div style={{display:'flex',gap:'0.3rem'}}>
-                        <button className="admin-icon-btn view" onClick={() => setModal({type:'admin', data:a})}><Eye size={12}/> View</button>
-                        <button className="admin-icon-btn edit" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={12}/> Edit</button>
-                        {a.role !== 'Super Admin' && <button className="admin-icon-btn danger" onClick={() => {
+                      <div style={{display:'flex',gap:'0.4rem'}}>
+                        <button className="admin-icon-btn view" title="View" onClick={() => setModal({type:'admin', data:a})}><Eye size={14}/></button>
+                        <button className="admin-icon-btn edit" title="Edit" onClick={() => setModal({type:'editAdmin', data:a})}><Pencil size={14}/></button>
+                        {a.role !== 'Super Admin' && <button className="admin-icon-btn danger" title="Delete" onClick={() => {
                           showConfirm('Delete Admin', 'Are you sure you want to delete this admin?', 'danger', () => showAlert('Deleted', 'Admin has been deleted.', 'success'));
-                        }}><Trash2 size={12}/> Delete</button>}
+                        }}><Trash2 size={14}/></button>}
                       </div>
                     </td>
                   </tr>
@@ -1197,7 +1204,13 @@ export default function AdminDashboard() {
                   </div>
                   <div className="admin-form-group">
                     <label className="admin-form-label">Date</label>
-                    <input className="admin-form-input" type="date"/>
+                    <DatePicker 
+                      selected={selectedDate} 
+                      onChange={(date) => setSelectedDate(date)} 
+                      className="admin-form-input" 
+                      placeholderText="Select Date"
+                      dateFormat="dd-MM-yyyy"
+                    />
                   </div>
                   <div className="admin-form-group">
                     <label className="admin-form-label">Start Time</label>

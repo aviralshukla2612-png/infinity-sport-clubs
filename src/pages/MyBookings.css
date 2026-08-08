@@ -507,7 +507,7 @@
 .mb-page-btn:hover:not(.active) { border-color: #444; color: #fff; }
 
 /* RESPONSIVE */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .mb-sidebar {
     display: block;
     position: fixed;

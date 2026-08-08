@@ -44,7 +44,7 @@ const PickleballBooking = () => {
   const [calYear, setCalYear] = useState(today.getFullYear());
   const [calMonth, setCalMonth] = useState(today.getMonth());
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
   const [playerCount, setPlayerCount] = useState(4);
 
   // Payment Modal States
@@ -73,7 +73,6 @@ const PickleballBooking = () => {
     fullName: '',
     phone: '',
     email: '',
-    aadhar: '',
     requests: ''
   });
   const selectedGround = grounds.find(g => g.id === selectedGroundId);
@@ -106,10 +105,10 @@ const PickleballBooking = () => {
   const isNextDisabled = () => {
     if (step === 1 && !selectedGroundId) return true;
     if (step === 2 && !selectedDate) return true;
-    if (step === 3 && !selectedTimeSlot) return true;
+    if (step === 3 && selectedTimeSlots.length === 0) return true;
     if (step === 4) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !emailRegex.test(playerDetails.email) || !playerDetails.aadhar.trim()) {
+      if (!playerDetails.fullName.trim() || !playerDetails.phone.trim() || !playerDetails.email.trim() || !emailRegex.test(playerDetails.email)) {
         return true;
       }
     }
@@ -321,14 +320,14 @@ const PickleballBooking = () => {
                     {timeSlots.map((slot, idx) => (
                       <div 
                         key={idx} 
-                        className={`time-slot ${slot.status === 'booked' ? 'booked' : (selectedTimeSlot === slot.time ? 'selected' : 'available')}`}
+                        className={`time-slot ${slot.status === 'booked' ? 'booked' : (selectedTimeSlots.includes(slot.time) ? 'selected' : 'available')}`}
                         onClick={() => {
                           if (slot.status !== 'booked') {
-                            setSelectedTimeSlot(slot.time);
-                            setTimeout(() => {
-                              setStep(4);
-                              document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }, 300);
+                            if (selectedTimeSlots.includes(slot.time)) {
+                              setSelectedTimeSlots(selectedTimeSlots.filter(t => t !== slot.time));
+                            } else {
+                              setSelectedTimeSlots([...selectedTimeSlots, slot.time]);
+                            }
                           }
                         }}
                       >
@@ -336,6 +335,17 @@ const PickleballBooking = () => {
                       </div>
                     ))}
                   </div>
+                  {selectedTimeSlots.length > 0 && (
+                    <button 
+                      className="btn-next" style={{marginTop: '20px', width: '100%', maxWidth: '200px'}}
+                      onClick={() => {
+                        setStep(4);
+                        document.querySelector('.booking-main-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      Continue <ArrowRight size={18}/>
+                    </button>
+                  )}
                 </div>
               )}
 
@@ -389,23 +399,6 @@ const PickleballBooking = () => {
                       )}
                     </div>
                     <div className="form-group">
-                      <label>Aadhar Card Number</label>
-                      <input
-                        type="text"
-                        className="dark-input"
-                        placeholder="XXXX XXXX XXXX"
-                        value={playerDetails.aadhar}
-                        maxLength={14}
-                        inputMode="numeric"
-                        style={{color:'#fff'}}
-                        onChange={(e) => {
-                          const digits = e.target.value.replace(/\D/g, '').slice(0, 12);
-                          const fmt = digits.replace(/(\d{4})(\d{1,4})?(\d{1,4})?/, (_, a, b, c) => c ? `${a} ${b} ${c}` : b ? `${a} ${b}` : a);
-                          setPlayerDetails({...playerDetails, aadhar: fmt});
-                        }}
-                      />
-                    </div>
-                    <div className="form-group">
                       <label>Special Requests (Optional)</label>
                       <textarea className="dark-input" rows="3" placeholder="Any special requests..." maxLength={200} value={playerDetails.requests} onChange={(e) => setPlayerDetails({...playerDetails, requests: e.target.value})}></textarea>
                     </div>
@@ -436,7 +429,11 @@ const PickleballBooking = () => {
               
               <div className="summary-row">
                 <span className="label">Time</span>
-                <span className="value">{selectedTimeSlot || '-'}</span>
+                <span className="value">
+                  {selectedTimeSlots.length > 0 
+                    ? `${selectedTimeSlots[0].split(' - ')[0]} - ${selectedTimeSlots[0].split(' - ')[1]}${selectedTimeSlots.length > 1 ? ` (+${selectedTimeSlots.length - 1})` : ''}`
+                    : '-'}
+                </span>
               </div>
               
               <div className="summary-row">
@@ -453,7 +450,7 @@ const PickleballBooking = () => {
               
               <div className="summary-total">
                 <span>Total</span>
-                <span className="price">₹{selectedGround?.price || 0}</span>
+                <span className="price">₹{(selectedGround?.price || 0) * (selectedTimeSlots.length || 1)}</span>
               </div>
               
               <button 
@@ -501,8 +498,12 @@ const PickleballBooking = () => {
                      <Clock size={18} className="preview-icon"/>
                      <div>
                        <div className="label">Time</div>
-                       <div className="val">{selectedTimeSlot}</div>
-                       <div className="sub">1 Hour</div>
+                       <div className="val">
+                         {selectedTimeSlots.length > 0 
+                           ? `${selectedTimeSlots[0].split(' - ')[0]} - ${selectedTimeSlots[0].split(' - ')[1]}${selectedTimeSlots.length > 1 ? ` (+${selectedTimeSlots.length - 1})` : ''}`
+                           : '-'}
+                       </div>
+                       <div className="sub">{selectedTimeSlots.length} Hour{selectedTimeSlots.length !== 1 && 's'}</div>
                      </div>
                    </div>
                    <div className="preview-detail-card">
@@ -517,7 +518,7 @@ const PickleballBooking = () => {
                      <FileText size={18} className="preview-icon"/>
                      <div>
                        <div className="label">Price</div>
-                       <div className="val">₹{selectedGround.price}</div>
+                       <div className="val">₹{selectedGround.price * selectedTimeSlots.length}</div>
                        <div className="sub">Total</div>
                      </div>
                    </div>
@@ -561,8 +562,8 @@ const PickleballBooking = () => {
               <h3 style={{fontSize: '1.2rem', fontWeight: 600, marginBottom: '1.5rem'}}>Booking Summary</h3>
               
               <div className="preview-summary-row">
-                <span>Ground Price (1 Hour)</span>
-                <span>₹{selectedGround.price}</span>
+                <span>Ground Price ({selectedTimeSlots.length} Hour{selectedTimeSlots.length !== 1 && 's'})</span>
+                <span>₹{selectedGround.price * selectedTimeSlots.length}</span>
               </div>
               <div className="preview-summary-row" style={{fontSize: '0.8rem', color: '#888'}}>
                 <span>Service Fee ⓘ</span>
@@ -578,7 +579,7 @@ const PickleballBooking = () => {
                    <div>Total Amount</div>
                    <div style={{fontSize: '0.75rem', color: '#888', fontWeight: 'normal'}}>Exclusive of all taxes</div>
                  </div>
-                 <div style={{color: 'var(--primary-color)', fontSize: '1.5rem', fontWeight: 'bold'}}>₹{selectedGround.price + 200}</div>
+                 <div style={{color: 'var(--primary-color)', fontSize: '1.5rem', fontWeight: 'bold'}}>₹{(selectedGround.price * selectedTimeSlots.length) + 200}</div>
               </div>
 
               <div style={{marginTop: '1.5rem'}}>
@@ -669,8 +670,24 @@ const PickleballBooking = () => {
                >
                  📋 My Bookings
                </button>
-             </div>
-          </div>
+               <button
+                 style={{
+                   padding:'0.85rem 2.5rem',
+                   background:'linear-gradient(135deg, #9C27B0, #E040FB)',
+                   border:'none', borderRadius:'12px',
+                   color:'#fff', fontSize:'0.95rem', fontWeight:700,
+                   cursor:'pointer', display:'flex', alignItems:'center', gap:'0.6rem',
+                   boxShadow:'0 4px 20px rgba(156,39,176,0.35)',
+                   transition:'all 0.2s'
+                 }}
+                 onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
+                 onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
+                 onClick={() => navigate('/write-review')}
+               >
+                 ⭐ Write a Review
+               </button>
+              </div>
+           </div>
         )}
 
         {/* Bottom Facilities Bar */}
@@ -828,7 +845,7 @@ const PickleballBooking = () => {
 
              <div style={{display: 'flex', gap: '1rem', marginTop: '2rem'}}>
               <button className="modal-btn-cancel" style={{flex: 1}} onClick={() => setShowPaymentModal(false)}>Cancel</button>
-              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => setShowConfirmBookingModal(true)}>Pay ₹{selectedGround.price + 200}</button>
+              <button className="modal-btn-confirm" style={{flex: 2, opacity: isPaymentValid() ? 1 : 0.5, cursor: isPaymentValid() ? 'pointer' : 'not-allowed'}} disabled={!isPaymentValid()} onClick={() => setShowConfirmBookingModal(true)}>Pay ₹{(selectedGround.price * selectedTimeSlots.length) + 200}</button>
             </div>
           </div>
         </div>
@@ -856,12 +873,12 @@ const PickleballBooking = () => {
                   court: selectedGround.name,
                   date: format(new Date(calYear, calMonth, selectedDate), 'dd MMM yyyy'),
                   day: format(new Date(calYear, calMonth, selectedDate), 'EEEE'),
-                  time: selectedTimeSlot,
-                  timeSlot: selectedTimeSlot,
-                  duration: '1 Hour',
+                  time: selectedTimeSlots.join(', '),
+                  timeSlot: selectedTimeSlots.join(', '),
+                  duration: `${selectedTimeSlots.length} Hour${selectedTimeSlots.length !== 1 ? 's' : ''}`,
                   players: `${playerCount} Players`,
-                  price: selectedGround.price + 200,
-                  amount: selectedGround.price + 200,
+                  price: (selectedGround.price * selectedTimeSlots.length) + 200,
+                  amount: (selectedGround.price * selectedTimeSlots.length) + 200,
                   status: 'confirmed',
                   paymentStatus: 'paid',
                   customer: playerDetails.fullName,

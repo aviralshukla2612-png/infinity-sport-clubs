@@ -11,6 +11,7 @@ import CricketBooking from './pages/CricketBooking';
 import VolleyballBooking from './pages/VolleyballBooking';
 import PickleballBooking from './pages/PickleballBooking';
 import MyBookings from './pages/MyBookings';
+import WriteReview from './pages/WriteReview';
 import { GlobalBookingProvider } from './context/GlobalBookingContext';
 import logo from './assets/images/logo.jpg';
 import loaderVideo from './assets/video/loadervideo.webm';
@@ -127,6 +128,7 @@ const AppLayout = () => {
           <Route path="/cricket-booking" element={<CricketBooking />} />
           <Route path="/volleyball-booking" element={<VolleyballBooking />} />
           <Route path="/pickleball-booking" element={<PickleballBooking />} />
+          <Route path="/write-review" element={<WriteReview />} />
         </Routes>
       </main>
     </div>

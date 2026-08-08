@@ -1,0 +1,151 @@
+.write-review-container {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color, #0A0A0A);
+  color: #fff;
+  padding: 2rem;
+}
+
+.review-form-box {
+  background: var(--surface-color, #141414);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 3rem;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.back-btn {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 0.95rem;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  color: #fff;
+}
+
+.review-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #fff;
+  text-align: center;
+}
+
+.review-subtitle {
+  color: #a0a0a0;
+  margin-bottom: 2.5rem;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.star {
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.star:hover {
+  transform: scale(1.1);
+}
+
+.star.active {
+  color: #FFB800; /* Gold color for stars */
+  fill: #FFB800;
+  filter: drop-shadow(0 0 8px rgba(255, 184, 0, 0.4));
+}
+
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.95rem;
+  color: #aaa;
+  margin-bottom: 0.75rem;
+}
+
+.dark-input {
+  width: 100%;
+  background: #222;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.2s;
+}
+
+.dark-input:focus {
+  outline: none;
+  border-color: #FF7A00;
+  box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1.1rem;
+  background: linear-gradient(135deg, #FF7A00, #e66d00);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255, 122, 0, 0.35);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #333;
+}
+
+.review-success {
+  text-align: center;
+  background: var(--surface-color, #141414);
+  padding: 4rem 3rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 500px;
+}
+
+.review-success h2 {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.review-success p {
+  color: #a0a0a0;
+  margin: 0;
+}
